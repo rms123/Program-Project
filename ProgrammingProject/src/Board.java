@@ -71,24 +71,24 @@ public class Board {
     }
 
     /**
-     * Returns true if ix is a valid index of a field on the student.
-     * @return true if 0 <= index < DIM*DIM
+     * Returns true of the (x,y,z)  refers to a valid field on the student.
+     *
+     * @return true if 0 <= x < DIM && 0 <= y < DIM && 0<= z<DIM;
      */
-    //@ ensures \result == (0 <= index && index < DIM * DIM);
+    //@ ensures \result == (0 <= x < DIM && 0 <= y < DIM && 0<= z<DIM;);
     /*@pure*/
     public Boolean isField(int x,int y,int z) {
     	return (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     }
 
     /**
-     * Returns true of the (row,col) pair refers to a valid field on the student.
-     *
-     * @return true if 0 <= row < DIM && 0 <= col < DIM
+     * Returns true if index is a valid index of a field on the student.
+     * @return true if 0 <= index < DIM*DIM
      */
-    //@ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM);
+    //@ ensures \result == (0 <= index && index < DIM * DIM*DIM);
     /*@pure*/
-    public Boolean isField(int row, int col) {
-    	return ((0<=row && row<DIM) && (0<=col && col< DIM));
+    public Boolean isField(int index) {
+    	return (0<= index && index < DIM*DIM*DIM);
     }
     
     /**
