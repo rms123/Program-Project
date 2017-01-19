@@ -36,8 +36,8 @@ public class ConnectFour {
 	
     public static void main(String[] args) {
     	System.setIn(new UncloseableInputStream());
-    	Player p1 = new HumanPlayer(args[0].toString(), Mark.OO);
-    	Player p2 = new HumanPlayer(args[1].toString(), Mark.XX);
+    	Player p1 = new HumanPlayer(args[0].toString(), Mark.YELLOW);
+    	Player p2 = new HumanPlayer(args[1].toString(), Mark.RED);
     	Game game = new Game(p1,p2);
     	game.start();
     }
