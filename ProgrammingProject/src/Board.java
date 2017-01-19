@@ -65,9 +65,9 @@ public class Board {
     //@ requires 0 <= row & row < DIM;
     //@ requires 0 <= col & col < DIM;
     /*@pure*/
-    //public int index(int row, int col) {
-    //	return DIM*row + col;
-   // }
+   // public int index(int x, int y, int z) {
+    //	return "x"+ "y" + "z";
+    //}
 
     /**
      * Returns true if ix is a valid index of a field on the student.

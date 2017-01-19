@@ -2,6 +2,8 @@
 
 import java.util.Scanner;
 
+
+
 /**
  * Class for maintaining a human player in ConnectFour
  * 
@@ -43,20 +45,31 @@ public class HumanPlayer extends Player {
     
     public int determineMove(Board board) {
         String prompt = "> " + getName() + " (" + getMark().toString() + ")"
-                + ", what is your choice? ";
-        int choice[] = new int[3]; 
+                + ", what is your choice for x? ";
         int choiceX = readInt(prompt);
-        int choiceY = readInt(prompt);
-        int choiceZ = readInt(prompt);
+        String prompt1 = "> " + getName() + " (" + getMark().toString() + ")"
+                + ", what is your choice for Y? ";
+        int choiceY = readInt(prompt1);
+        String prompt2 = "> " + getName() + " (" + getMark().toString() + ")"
+                + ", what is your choice for Z? ";
+        int choiceZ = readInt(prompt2);
         boolean valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ);
         while (!valid) {
-            System.out.println("ERROR: field " + choiceX
+            System.out.println("ERROR: field " + choiceX + choiceY + choiceZ
                     + " is no valid choice.");
             choiceX = readInt(prompt);
             valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ);
         }
-        choice[0]= choiceX; 
-        return choice[0]; 
+        int choice[] = {choiceX, choiceY, choiceZ};
+
+        StringBuilder strNum = new StringBuilder();
+
+        for (int num : choice) 
+        {
+             strNum.append(num);
+        }
+        int finalInt = Integer.parseInt(strNum.toString());
+        return finalInt;
     }
 
     /**

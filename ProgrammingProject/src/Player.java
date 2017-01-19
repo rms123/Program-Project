@@ -75,7 +75,13 @@ public abstract class Player {
      */
     public void makeMove(Board board) {
         int choice = determineMove(board);
-        board.setField(choiceX,choiceY,choiceZ, getMark());
+        String temp = Integer.toString(choice);
+        int[] newGuess = new int[temp.length()];
+        for (int i = 0; i < temp.length(); i++)
+        {
+            newGuess[i] = temp.charAt(i) - '0';
+        }
+        board.setField(newGuess[0],newGuess[1],newGuess[2], getMark());
     }
 
 }
