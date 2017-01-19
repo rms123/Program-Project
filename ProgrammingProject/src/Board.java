@@ -58,16 +58,17 @@ public class Board {
     }
 
     /**
-     * Calculates the index in the linear array of fields from a (row, col)
+     * Calculates the index in the linear array of fields from a (x, y, z)
      * pair.
-     * @return the index belonging to the (row,col)-field
+     * @return the index belonging to the (x,y,z)-field
      */
-    //@ requires 0 <= row & row < DIM;
-    //@ requires 0 <= col & col < DIM;
+    //@ requires 0 <= x & x < DIM;
+    //@ requires 0 <= y & y < DIM;
+    //@ requires 0 <= z & z < DIM;
     /*@pure*/
-    //public int index(int row, int col) {
-    //	return DIM*row + col;
-   // }
+    public int index(int x, int y, int z) {
+    	return DIM*x + y + DIM*DIM*z;
+    }
 
     /**
      * Returns true if ix is a valid index of a field on the student.
