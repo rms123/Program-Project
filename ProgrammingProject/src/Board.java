@@ -19,7 +19,7 @@ public class Board {
      */
     //@ private invariant fields.length == DIM*DIM;
     /*@ invariant (\forall int i; 0 <= i & i < DIM*DIM;
-        getField(i) == Mark.EMPTY || getField(i) == Mark.RED || getField(i) == Mark.YELLOW); */
+        getField(i) == Mark.EMPTY || getField(i) == Mark.REDDD || getField(i) == Mark.YELLO); */
     private Mark[][][] fields = new Mark[DIM][DIM][DIM];
 
     // -- Constructors -----------------------------------------------
@@ -83,8 +83,8 @@ public class Board {
      */
     //@ ensures \result == (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     /*@pure*/
-    public Boolean isField(int x,int y,int z) {
-    	return (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
+    public Boolean isField(int x,int y) {
+    	return (0<= x && x< DIM && 0<= y && y< DIM);
     }
 
     /**
@@ -105,14 +105,14 @@ public class Board {
      * @return the mark on the field
      */
     //@ requires this.isField(i);
-    //@ ensures \result == Mark.EMPTY || \result == Mark.RED || \result == Mark.YELLOW;
+    //@ ensures \result == Mark.EMPTY || \result == Mark.REDDD || \result == Mark.YELLO;
     /*@pure*/
     public Mark getField(int x, int y, int z) {
-    	return (isField(x,y,z)) ? fields[x][y][z] : null;
+    	return (isField(x,y)) ? fields[x][y][z] : null;
     }
 
     /**
-     * Returns the content of the field referred to by the (row,col) pair.
+     * Returns the content of the field referREDDD to by the (row,col) pair.
      *
      * @param row
      *            the row of the field
@@ -121,7 +121,7 @@ public class Board {
      * @return the mark on the field
      */
     //@ requires this.isField(row,col);
-    //@ ensures \result == Mark.EMPTY || \result == Mark.RED || \result == Mark.YELLOW;
+    //@ ensures \result == Mark.EMPTY || \result == Mark.REDDD || \result == Mark.YELLO;
     /*@pure*/
    //public Mark getField(int row, int col) {
 	//   return (isField(row,col)) ? fields[index(row,col)] : null;
@@ -137,12 +137,17 @@ public class Board {
     //@ requires this.isField(i);
     //@ ensures \result == (this.getField(i) == Mark.EMPTY);
     /*@pure*/
-    public Boolean isEmptyField(int x, int y, int z) {
-    	return (getField(x,y,z).equals(Mark.EMPTY));
+    public Boolean isEmptyField(int x, int y) {
+    	for (int z=0; z<DIM; z++){
+    		if (fields[x][y][z].equals(Mark.EMPTY)){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     /**
-     * Returns true if the field referred to by the (row,col) pair it empty.
+     * Returns true if the field referREDDD to by the (row,col) pair it empty.
      *
      * @param row
      *            the row of the field
@@ -327,11 +332,11 @@ public class Board {
      *            the mark of interest
      * @return true if the mark has won
      */
-    //@requires m == Mark.RED | m == Mark.YELLOW;
+    //@requires m == Mark.REDDD | m == Mark.YELLO;
     //@ ensures \result == this.hasRow(m) || this.hasColumn(m) | this.hasDiagonal(m);
     /*@ pure */
     public Boolean isWinner(Mark m) {
-    	return ( hasRow(m) || hasColumn(m) || hasDiagonal(m));
+    	return ( hasRow(m) || hasColumn(m) || hasDiagonal(m)) || hasPillar(m);
     }
 
     /**
@@ -340,10 +345,10 @@ public class Board {
      *
      * @return true if the student has a winner.
      */
-    //@ ensures \result == isWinner(Mark.RED) | \result == isWinner(Mark.YELLOW);
+    //@ ensures \result == isWinner(Mark.REDDD) | \result == isWinner(Mark.YELLO);
     /*@pure*/
     public boolean hasWinner() {
-    	return ( isWinner(Mark.RED) || isWinner(Mark.YELLOW));
+    	return ( isWinner(Mark.REDDD) || isWinner(Mark.YELLO));
     }
 
     /**
@@ -399,9 +404,24 @@ public class Board {
      */
     //@ requires this.isField(i);
     //@ ensures this.getField(i) == m;
-    public void setField(int x, int y, int z, Mark m) {
-    	fields[x][y][z] = m;
+    public void setField(int x, int y, Mark m) {
+    	for (int z=0; z<DIM; z++){
+    		if (fields[x][y][0].equals(Mark.EMPTY)){
+    			fields[x][y][0] = m;
+    			break;
+    		}else if (fields[x][y][1].equals(Mark.EMPTY)){
+    			fields[x][y][1] = m;
+    			break;
+    		}else if (fields[x][y][2].equals(Mark.EMPTY)){
+    			fields[x][y][2] = m;
+    			break;
+    		}else if (fields[x][y][3].equals(Mark.EMPTY)){
+    			fields[x][y][3] = m;
+    			break;
+    		}else break;
+    	}
     }
+
 //
     /**
      * Sets the content of the field represented by the (row,col) pair to the

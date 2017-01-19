@@ -76,27 +76,27 @@ public abstract class Player {
     public void makeMove(Board board) {
         int choice = determineMove(board);
         String temp="";
-        for (int x = 0; x < 34; x++){
-        	if (choice == x){
-        		if (x<9) { 
-        			temp = "00" + x;
-        			break;
-        		}else{ temp = "0" + x; 
-        			break;
-        		}
-        	}
+        if (choice == 0){
+        	temp = "00" ;
+        	
+        }else if (choice == 1){
+        	temp = "01" ;
+        	
+        }else if (choice == 2){
+        	temp = "02" ;
 
-        	else{ 
-        		temp = Integer.toString(choice);
-        	}
+        }else if (choice == 3){
+        	temp = "03" ;
+        }else{ 
+        	temp = Integer.toString(choice);
         }
-
+    
         int[] newGuess = new int[temp.length()];
         for (int i = 0; i < temp.length(); i++)
         {
             newGuess[i] = temp.charAt(i) - '0';
         }
-        board.setField(newGuess[0],newGuess[1],newGuess[2], getMark());
+        board.setField(newGuess[0],newGuess[1], getMark());
     }
 
 }

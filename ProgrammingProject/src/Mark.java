@@ -2,7 +2,7 @@
 
 /**
  * Represents a mark in the Tic Tac Toe game. There three possible values:
- * Mark.RED, Mark.YELLOW and Mark.EMPTY.
+ * Mark.REDDD, Mark.YELLO and Mark.EMPTY.
  * Module 2 lab assignment
  * 
  * @author Theo Ruys
@@ -10,11 +10,11 @@
  */
 public enum Mark {
     
-    EMPTY, RED, YELLOW;
+    EMPTY, REDDD, YELLO;
 
     /*@
-       ensures this == Mark.RED ==> \result == Mark.YELLOW;
-       ensures this == Mark.YELLOW ==> \result == Mark.RED;
+       ensures this == Mark.REDDD ==> \result == Mark.YELLO;
+       ensures this == Mark.YELLO ==> \result == Mark.REDDD;
        ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
      */
     /**
@@ -23,10 +23,10 @@ public enum Mark {
      * @return the other mark is this mark is not EMPTY or EMPTY
      */
     public Mark other() {
-        if (this == RED) {
-            return YELLOW;
-        } else if (this == YELLOW) {
-            return RED;
+        if (this == REDDD) {
+            return YELLO;
+        } else if (this == YELLO) {
+            return REDDD;
         } else {
             return EMPTY;
         }

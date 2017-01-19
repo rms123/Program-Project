@@ -118,7 +118,7 @@ public class Game {
      * the changed game situation is printed.
      */
     private void play() {
-    	update();
+    	
         while (!board.gameOver()){
         	
         	update();
@@ -126,6 +126,7 @@ public class Game {
         	current = (current +1 ) % NUMBER_PLAYERS;
         	
         }
+        printResult();
     }
 
     /**

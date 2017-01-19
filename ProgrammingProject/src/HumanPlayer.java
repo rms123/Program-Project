@@ -50,19 +50,16 @@ public class HumanPlayer extends Player {
         String prompt1 = "> " + getName() + " (" + getMark().toString() + ")"
                 + ", what is your choice for Y? ";
         int choiceY = readInt(prompt1);
-        String prompt2 = "> " + getName() + " (" + getMark().toString() + ")"
-                + ", what is your choice for Z? ";
-        int choiceZ = readInt(prompt2);
-        boolean valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ) && board.IsChoiceValid(choiceX,choiceY,choiceZ);
+        boolean valid = board.isField(choiceX,choiceY) && board.isEmptyField(choiceX,choiceY);
         while (!valid) {
-            System.out.println("ERROR: field " + choiceX + choiceY + choiceZ
+            System.out.println("ERROR: field " + choiceX + choiceY 
                     + " is no valid choice.");
             choiceX = readInt(prompt);
             choiceY = readInt(prompt1);
-            choiceZ = readInt(prompt2);
-            valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ) && board.IsChoiceValid(choiceX,choiceY,choiceZ);
+           
+            valid = board.isField(choiceX,choiceY) && board.isEmptyField(choiceX,choiceY);
         }
-        int choice[] = {choiceX, choiceY, choiceZ};
+        int choice[] = {choiceX, choiceY};
 
         StringBuilder strNum = new StringBuilder();
 
