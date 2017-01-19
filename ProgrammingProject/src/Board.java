@@ -75,7 +75,7 @@ public class Board {
      *
      * @return true if 0 <= x < DIM && 0 <= y < DIM && 0<= z<DIM;
      */
-    //@ ensures \result == (0 <= x < DIM && 0 <= y < DIM && 0<= z<DIM;);
+    //@ ensures \result == (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     /*@pure*/
     public Boolean isField(int x,int y,int z) {
     	return (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
