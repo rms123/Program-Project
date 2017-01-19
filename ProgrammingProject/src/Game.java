@@ -121,10 +121,9 @@ public class Game {
     	
         while (!board.gameOver()){
         	
-        	update();
         	players[current].makeMove(board);
         	current = (current +1 ) % NUMBER_PLAYERS;
-        	
+        	update();
         }
         printResult();
     }

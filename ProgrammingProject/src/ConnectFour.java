@@ -38,7 +38,7 @@ public class ConnectFour {
     	System.setIn(new UncloseableInputStream());
     	Player p1 = new HumanPlayer(args[0].toString(), Mark.YELLO);
     	//Player p2 = new HumanPlayer(args[0].toString(), Mark.REDDD);
-    	Player p2 = new ComputerPlayer(Mark.REDDD, new NaiveStrategy());
+    	Player p2 = new ComputerPlayer(Mark.REDDD, new SmartStrategy());
     	Game game = new Game(p1,p2);
     	game.start();
     }

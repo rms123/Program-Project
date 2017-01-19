@@ -182,17 +182,7 @@ public class Board {
     	return true;
     }
 
-    /**
-     * Returns true if the game is over. The game is over when there is a winner
-     * or the whole student is full.
-     *
-     * @return true if the game is over
-     */
-    //@ ensures \result == this.isFull() || this.hasWinner();
-    /*@pure*/
-    public Boolean gameOver() {
-    	return this.isFull() || this.hasWinner();
-    }
+    
 
     /**
      * Checks whether there is a row which is full and only contains the mark
@@ -222,7 +212,9 @@ public class Board {
     		for (int y=0; y<DIM; y++){
     			for (int z=0; z<DIM; z++){
     				if (fields[0][y][z].equals(m)&& fields[1][y][z].equals(m)&& fields[2][y][z].equals(m)&& fields[3][y][z].equals(m)){
-    	    			return true;
+    	    			
+    					return true;
+    	    			
     	    		}
     			}
     		}
@@ -242,7 +234,8 @@ public class Board {
 		for (int x=0; x<DIM; x++){
 			for (int z=0; z<DIM; z++){
 				if (fields[x][0][z].equals(m)&& fields[x][1][z].equals(m)&& fields[x][2][z].equals(m)&& fields[x][3][z].equals(m)){
-	    			return true;
+					
+					return true;
 	    		}
 			}
 		}
@@ -253,7 +246,8 @@ public class Board {
 		for (int x=0; x<DIM; x++){
 			for (int y=0; y<DIM; y++){
 				if (fields[x][y][0].equals(m)&& fields[x][y][1].equals(m)&& fields[x][y][2].equals(m)&& fields[x][y][3].equals(m)){
-	    			return true;
+					
+					return true;
 	    		}
 			}
 		}
@@ -282,41 +276,51 @@ public class Board {
 		// Diagonal for X-Y plane
     	for (int z=0; z<DIM; z++){
     		if (fields[0][0][z].equals(m)&& fields[1][1][z].equals(m)&& fields[2][2][z].equals(m)&& fields[3][3][z].equals(m)){
+    			
     			return true;
     		}
     		else if (fields[0][3][z].equals(m)&& fields[1][2][z].equals(m)&& fields[2][1][z].equals(m)&& fields[3][0][z].equals(m)){
+    			
     			return true;
     		}
     	}
     	// Diagonal for X-Z Plane
     	for (int y=0; y<DIM; y++){
     		if (fields[0][y][0].equals(m)&& fields[1][y][1].equals(m)&& fields[2][y][2].equals(m)&& fields[3][y][3].equals(m)){
+    		
     			return true;
     		}
     		else if (fields[0][y][3].equals(m)&& fields[1][y][2].equals(m)&& fields[2][y][1].equals(m)&& fields[3][y][0].equals(m)){
+    			
     			return true;
     		}
     	}
     	// Diagonal for Y-Z Plane
     	for (int x=0; x<DIM; x++){
     		if (fields[x][0][0].equals(m)&& fields[x][1][1].equals(m)&& fields[x][2][2].equals(m)&& fields[x][3][3].equals(m)){
+    		
     			return true;
     		}
     		else if (fields[x][0][3].equals(m)&& fields[x][1][2].equals(m)&& fields[x][2][1].equals(m)&& fields[x][3][0].equals(m)){
+    			
     			return true;
     		}
     	}
     	// Diagonal for Cube
     		if (fields[0][0][0].equals(m)&& fields[1][1][1].equals(m)&& fields[2][2][2].equals(m)&& fields[3][3][3].equals(m)){
+    			
     			return true;
     		}
     		else if (fields[0][0][3].equals(m)&& fields[1][1][2].equals(m)&& fields[2][2][1].equals(m)&& fields[3][3][0].equals(m)){
+    			
     			return true;
     		}
     		if (fields[3][0][0].equals(m)&& fields[2][1][1].equals(m)&& fields[1][2][2].equals(m)&& fields[0][3][3].equals(m)){
+    			
     			return true;
     		}
     		else if (fields[3][0][3].equals(m)&& fields[2][1][2].equals(m)&& fields[1][2][1].equals(m)&& fields[0][3][0].equals(m)){
+    			
     			return true;
     		}
     	
@@ -336,7 +340,7 @@ public class Board {
     //@ ensures \result == this.hasRow(m) || this.hasColumn(m) | this.hasDiagonal(m);
     /*@ pure */
     public Boolean isWinner(Mark m) {
-    	return ( hasRow(m) || hasColumn(m) || hasDiagonal(m)) || hasPillar(m);
+    	return (hasRow(m) || hasColumn(m) || hasDiagonal(m) || hasPillar(m));
     }
 
     /**
@@ -348,9 +352,20 @@ public class Board {
     //@ ensures \result == isWinner(Mark.REDDD) | \result == isWinner(Mark.YELLO);
     /*@pure*/
     public boolean hasWinner() {
-    	return ( isWinner(Mark.REDDD) || isWinner(Mark.YELLO));
+    	return (isWinner(Mark.REDDD) || isWinner(Mark.YELLO));
     }
-
+    
+    /**
+     * Returns true if the game is over. The game is over when there is a winner
+     * or the whole student is full.
+     *
+     * @return true if the game is over
+     */
+    //@ ensures \result == this.isFull() || this.hasWinner();
+    /*@pure*/
+    public Boolean gameOver() {
+    	return this.isFull() || this.hasWinner();
+    }
     /**
      * Returns a String representation of this student. In addition to the current
      * situation, the String also shows the numbering of the fields.
