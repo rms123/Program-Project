@@ -7,7 +7,7 @@ import java.io.*;
  * @author Theo Ruys
  * @version $Revision: 1.4 $
  */
-public class TicTacToe {
+public class ConnectFour {
 	private static class UncloseableInputStream extends FilterInputStream {
 
         /**
