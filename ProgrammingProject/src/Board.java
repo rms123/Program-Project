@@ -189,22 +189,32 @@ public class Board {
      * @param m
      *            the mark of interest
      * @return true if there is a row controlled by m
-     */
+     *///---------------------------------------------------HASROWWWWWWW ORIGINAL
     /*@ pure */
+   // public boolean hasRow(Mark m) {
+    //	for (int row = 0; row < DIM; row++) { 
+     //       boolean othermark = false; 
+     //       for (int col = 0; col < DIM; col++) { 
+     //       	if (!getField(row, col).equals(m)) { 
+      //      		othermark = true; 
+      //      		break; 
+      //      	} 
+      //      } 
+       //     if (othermark == false) {
+       //     	return true; 
+       //     }
+       //    } 
+      //  return false; 
+   // }
     public boolean hasRow(Mark m) {
-    	for (int row = 0; row < DIM; row++) { 
-            boolean othermark = false; 
-            for (int col = 0; col < DIM; col++) { 
-            	if (!getField(row, col).equals(m)) { 
-            		othermark = true; 
-            		break; 
-            	} 
-            } 
-            if (othermark == false) {
-            	return true; 
-            }
-           } 
-        return false; 
+    		for (int y=0; y<DIM; y++){
+    			for (int z=0; z<DIM; z++){
+    				if (fields[0][y][z].equals(m)&& fields[1][y][z].equals(m)&& fields[2][y][z].equals(m)&& fields[3][y][z].equals(m)){
+    	    			return true;
+    	    		}
+    			}
+    		}
+    		return false;
     }
 
     /**
@@ -217,20 +227,26 @@ public class Board {
      */
     /*@ pure */
     public boolean hasColumn(Mark m) {
-    	for (int col = 0; col < DIM; col++) { 
-            boolean othermark = false; 
-            for (int row = 0; row < DIM; row++) { 
-            	if (!getField(row, col).equals(m)) { 
-            		othermark = true; 
-            		break; 
-            	} 
-            } 
-            if (othermark == false) {
-            	return true; 
-            }
-           } 
-        return false; 
-    }
+		for (int x=0; x<DIM; x++){
+			for (int z=0; z<DIM; z++){
+				if (fields[x][0][z].equals(m)&& fields[x][1][z].equals(m)&& fields[x][2][z].equals(m)&& fields[x][3][z].equals(m)){
+	    			return true;
+	    		}
+			}
+		}
+		return false;
+}
+    
+    public boolean hasPillar(Mark m) {
+		for (int x=0; x<DIM; x++){
+			for (int y=0; y<DIM; y++){
+				if (fields[x][y][0].equals(m)&& fields[x][y][1].equals(m)&& fields[x][y][2].equals(m)&& fields[x][y][3].equals(m)){
+	    			return true;
+	    		}
+			}
+		}
+		return false;
+}
 
     /**
      * Checks whether there is a diagonal which is full and only contains the
@@ -250,6 +266,17 @@ public class Board {
     		return false;
     	}
     }
+    public boolean hasPillar(Mark m) {
+		for (int x=0; x<DIM; x++){
+			for (int z=0; z<DIM; z++){
+				if (fields[0][0][0].equals(m)&& fields[1][1][0].equals(m)&& fields[x][y][2].equals(m)&& fields[x][y][3].equals(m)){
+	    			return true;
+	    		}
+			}
+		}
+		return false;
+}
+
 
     /**
      * Checks if the mark m has won. A mark wins if it controls at
