@@ -419,4 +419,21 @@ public class Board {
     //public void setField(int row, int col, Mark m) {
     //	fields[index(row,col)] = m;
     //}
+    public boolean IsChoiceValid(int x, int y, int z){
+    	// Checks if mark is in the air
+    	if (z == 0){
+    		return true;
+    	}
+    	if (z == 1){
+    		return (fields[x][y][0].equals(Mark.EMPTY))?  false : true;
+    	}
+    	else if (z == 2){
+    		return (fields[x][y][1].equals(Mark.EMPTY))?  false : true;
+    	}
+    	else if (z == 3){
+    		return (fields[x][y][2].equals(Mark.EMPTY))?  false : true;
+    	}
+    	// Not valid if Z>3
+    	return false;
+    }
 }

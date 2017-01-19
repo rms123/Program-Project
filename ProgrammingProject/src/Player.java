@@ -79,7 +79,7 @@ public abstract class Player {
         for (int x = 0; x < 34; x++){
         	if (choice == x){
         		if (x<9) { 
-        			temp = "000";
+        			temp = "00" + x;
         			break;
         		}else{ temp = "0" + x; 
         			break;
