@@ -58,36 +58,43 @@ public class Board {
     }
 
     /**
-     * Calculates the index in the linear array of fields from a (row, col)
+     * Calculates the index in the linear array of fields from a (x, y, z)
      * pair.
-     * @return the index belonging to the (row,col)-field
+     * @return the index belonging to the (x,y,z)-field
      */
-    //@ requires 0 <= row & row < DIM;
-    //@ requires 0 <= col & col < DIM;
+    //@ requires 0 <= x & x < DIM;
+    //@ requires 0 <= y & y < DIM;
+    //@ requires 0 <= z & z < DIM;
     /*@pure*/
+<<<<<<< HEAD
    // public int index(int x, int y, int z) {
     //	return "x"+ "y" + "z";
     //}
+=======
+    public int index(int x, int y, int z) {
+    	return DIM*x + y + DIM*DIM*z;
+    }
+>>>>>>> branch 'master' of https://github.com/rms123/Program-Project.git
 
     /**
-     * Returns true if ix is a valid index of a field on the student.
-     * @return true if 0 <= index < DIM*DIM
+     * Returns true of the (x,y,z)  refers to a valid field on the student.
+     *
+     * @return true if 0 <= x < DIM && 0 <= y < DIM && 0<= z<DIM;
      */
-    //@ ensures \result == (0 <= index && index < DIM * DIM);
+    //@ ensures \result == (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     /*@pure*/
     public Boolean isField(int x,int y,int z) {
     	return (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     }
 
     /**
-     * Returns true of the (row,col) pair refers to a valid field on the student.
-     *
-     * @return true if 0 <= row < DIM && 0 <= col < DIM
+     * Returns true if index is a valid index of a field on the student.
+     * @return true if 0 <= index < DIM*DIM
      */
-    //@ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM);
+    //@ ensures \result == (0 <= index && index < DIM * DIM*DIM);
     /*@pure*/
-    public Boolean isField(int row, int col) {
-    	return ((0<=row && row<DIM) && (0<=col && col< DIM));
+    public Boolean isField(int index) {
+    	return (0<= index && index < DIM*DIM*DIM);
     }
     
     /**
