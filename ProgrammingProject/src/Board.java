@@ -257,23 +257,58 @@ public class Board {
      * @return true if there is a diagonal controlled by m
      */
     /*@ pure */
+   // public boolean hasDiagonal(Mark m) {
+   // 	if ( getField(0).equals(m) && getField(4).equals(m) && getField(8).equals(m) ){
+   // 		return true;
+   // 	}else if ( getField(2).equals(m) && getField(4).equals(m) && getField(6).equals(m)){
+   // 		return true;
+   // 	}else{
+    //		return false;
+   // 	}
+    //}
     public boolean hasDiagonal(Mark m) {
-    	if ( getField(0).equals(m) && getField(4).equals(m) && getField(8).equals(m) ){
-    		return true;
-    	}else if ( getField(2).equals(m) && getField(4).equals(m) && getField(6).equals(m)){
-    		return true;
-    	}else{
-    		return false;
+		// Diagonal for X-Y plane
+    	for (int z=0; z<DIM; z++){
+    		if (fields[0][0][z].equals(m)&& fields[1][1][z].equals(m)&& fields[2][2][z].equals(m)&& fields[3][3][z].equals(m)){
+    			return true;
+    		}
+    		else if (fields[0][3][z].equals(m)&& fields[1][2][z].equals(m)&& fields[2][1][z].equals(m)&& fields[3][0][z].equals(m)){
+    			return true;
+    		}
     	}
-    }
-    public boolean hasPillar(Mark m) {
-		for (int x=0; x<DIM; x++){
-			for (int z=0; z<DIM; z++){
-				if (fields[0][0][0].equals(m)&& fields[1][1][0].equals(m)&& fields[x][y][2].equals(m)&& fields[x][y][3].equals(m)){
-	    			return true;
-	    		}
-			}
-		}
+    	// Diagonal for X-Z Plane
+    	for (int y=0; y<DIM; y++){
+    		if (fields[0][y][0].equals(m)&& fields[1][y][1].equals(m)&& fields[2][y][2].equals(m)&& fields[3][y][3].equals(m)){
+    			return true;
+    		}
+    		else if (fields[0][y][3].equals(m)&& fields[1][y][2].equals(m)&& fields[2][y][1].equals(m)&& fields[3][y][0].equals(m)){
+    			return true;
+    		}
+    	}
+    	// Diagonal for Y-Z Plane
+    	for (int x=0; x<DIM; x++){
+    		if (fields[x][0][0].equals(m)&& fields[x][1][1].equals(m)&& fields[x][2][2].equals(m)&& fields[x][3][3].equals(m)){
+    			return true;
+    		}
+    		else if (fields[x][0][3].equals(m)&& fields[x][1][2].equals(m)&& fields[x][2][1].equals(m)&& fields[x][3][0].equals(m)){
+    			return true;
+    		}
+    	}
+    	// Diagonal for Cube
+    	for (int x=0; x<DIM; x++){
+    		if (fields[x][0][0].equals(m)&& fields[x][1][1].equals(m)&& fields[x][2][2].equals(m)&& fields[x][3][3].equals(m)){
+    			return true;
+    		}
+    		else if (fields[x][0][3].equals(m)&& fields[x][1][2].equals(m)&& fields[x][2][1].equals(m)&& fields[x][3][0].equals(m)){
+    			return true;
+    		}
+    		if (fields[x][0][0].equals(m)&& fields[x][1][1].equals(m)&& fields[x][2][2].equals(m)&& fields[x][3][3].equals(m)){
+    			return true;
+    		}
+    		else if (fields[x][0][3].equals(m)&& fields[x][1][2].equals(m)&& fields[x][2][1].equals(m)&& fields[x][3][0].equals(m)){
+    			return true;
+    		}
+    	}
 		return false;
 }
 
