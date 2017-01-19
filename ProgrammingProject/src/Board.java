@@ -7,7 +7,7 @@
  * @version $Revision: 1.4 $
  */
 public class Board {
-    public static final int DIM = 3;
+    public static final int DIM = 4;
     private static final String[] NUMBERING = {" 0 | 1 | 2 ", "---+---+---",
         " 3 | 4 | 5 ", "---+---+---", " 6 | 7 | 8 "};
     private static final String LINE = NUMBERING[1];
@@ -20,7 +20,7 @@ public class Board {
     //@ private invariant fields.length == DIM*DIM;
     /*@ invariant (\forall int i; 0 <= i & i < DIM*DIM;
         getField(i) == Mark.EMPTY || getField(i) == Mark.XX || getField(i) == Mark.OO); */
-    private Mark[] fields = new Mark[DIM*DIM];
+    private Mark[][][] fields = new Mark[DIM][DIM][DIM];
 
     // -- Constructors -----------------------------------------------
 
@@ -29,8 +29,12 @@ public class Board {
      */
     //@ ensures (\forall int i; 0 <= i & i < DIM * DIM; this.getField(i) == Mark.EMPTY);
     public Board() {
-    	for (int i=0; i<DIM*DIM; i++){
-    		fields[i] = Mark.EMPTY;	
+    	for (int x=0; x<DIM; x++){
+    		for (int y=0; y<DIM; y++){
+    			for (int z=0; z<DIM; z++){
+    				fields[x][y][z] = Mark.EMPTY;	
+    			}
+    		}
     	}
     }
 
@@ -43,8 +47,12 @@ public class Board {
       @*/
     public Board deepCopy() {
     	Board newBoard = new Board();
-    	for (int i=0; i<DIM*DIM; i++){
-    		newBoard.fields[i] = this.fields[i];
+    	for (int x=0; x<DIM; x++){
+    		for (int y=0; y<DIM; y++){
+    			for (int z=0; z<DIM; z++){
+    				newBoard.fields[x][y][z] = this.fields[x][y][z];
+    			}
+    		}
     	}
     	return newBoard;
     }
@@ -57,9 +65,9 @@ public class Board {
     //@ requires 0 <= row & row < DIM;
     //@ requires 0 <= col & col < DIM;
     /*@pure*/
-    public int index(int row, int col) {
-    	return DIM*row + col;
-    }
+    //public int index(int row, int col) {
+    //	return DIM*row + col;
+   // }
 
     /**
      * Returns true if ix is a valid index of a field on the student.
@@ -67,8 +75,8 @@ public class Board {
      */
     //@ ensures \result == (0 <= index && index < DIM * DIM);
     /*@pure*/
-    public boolean isField(int index) {
-    	return (0<= index && index < DIM*DIM);
+    public boolean isField(int x,int y,int z) {
+    	return (0<= x && x< DIM && 0<= y && y< DIM && 0<= z && z< DIM);
     }
 
     /**
@@ -92,8 +100,8 @@ public class Board {
     //@ requires this.isField(i);
     //@ ensures \result == Mark.EMPTY || \result == Mark.XX || \result == Mark.OO;
     /*@pure*/
-    public Mark getField(int i) {
-    	return (isField(i)) ? fields[i] : null;
+    public Mark getField(int x, int y, int z) {
+    	return (isField(x,y,z)) ? fields[x][y][z] : null;
     }
 
     /**
@@ -108,8 +116,8 @@ public class Board {
     //@ requires this.isField(row,col);
     //@ ensures \result == Mark.EMPTY || \result == Mark.XX || \result == Mark.OO;
     /*@pure*/
-    public Mark getField(int row, int col) {
-    	return (isField(row,col)) ? fields[index(row,col)] : null;
+   public Mark getField(int row, int col) {
+	   return (isField(row,col)) ? fields[index(row,col)] : null;
     }
 
     /**
@@ -122,8 +130,8 @@ public class Board {
     //@ requires this.isField(i);
     //@ ensures \result == (this.getField(i) == Mark.EMPTY);
     /*@pure*/
-    public boolean isEmptyField(int i) {
-    	return (getField(i).equals(Mark.EMPTY));
+    public boolean isEmptyField(int x, int y, int z) {
+    	return (getField(x,y,z).equals(Mark.EMPTY));
     }
 
     /**
@@ -138,9 +146,9 @@ public class Board {
     //@ requires this.isField(row,col);
     //@ ensures \result == (this.getField(row,col) == Mark.EMPTY);
     /*@pure*/
-    public boolean isEmptyField(int row, int col) {
-    	return (getField(row,col).equals(Mark.EMPTY));
-    }
+    //public boolean isEmptyField(int row, int col) {
+    //	return (getField(row,col).equals(Mark.EMPTY));
+    //}
 
     /**
      * Tests if the whole student is full.
@@ -150,9 +158,13 @@ public class Board {
     //@ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM; this.getField(i) != Mark.EMPTY);
     /*@pure*/
     public boolean isFull() {
-    	for (int i =0; i<DIM*DIM; i++){
-    		if (fields[i].equals(Mark.EMPTY)){
-    			return false;
+    	for (int x=0; x<DIM; x++){
+    		for (int y=0; y<DIM; y++){
+    			for (int z=0; z<DIM; z++){
+    				if (fields[x][y][z].equals(Mark.EMPTY)){
+    	    			return false;
+    	    		}
+    			}
     		}
     	}
     	return true;
