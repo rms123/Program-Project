@@ -40,18 +40,23 @@ public class HumanPlayer extends Player {
      *            the game board
      * @return the player's chosen field
      */
+    
     public int determineMove(Board board) {
         String prompt = "> " + getName() + " (" + getMark().toString() + ")"
                 + ", what is your choice? ";
-        int choice = readInt(prompt);
-        boolean valid = board.isField(choice) && board.isEmptyField(choice);
+        int choice[] = new int[3]; 
+        int choiceX = readInt(prompt);
+        int choiceY = readInt(prompt);
+        int choiceZ = readInt(prompt);
+        boolean valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ);
         while (!valid) {
-            System.out.println("ERROR: field " + choice
+            System.out.println("ERROR: field " + choiceX
                     + " is no valid choice.");
-            choice = readInt(prompt);
-            valid = board.isField(choice) && board.isEmptyField(choice);
+            choiceX = readInt(prompt);
+            valid = board.isField(choiceX,choiceY,choiceZ) && board.isEmptyField(choiceX,choiceY,choiceZ);
         }
-        return choice;
+        choice[0]= choiceX; 
+        return choice[0]; 
     }
 
     /**
