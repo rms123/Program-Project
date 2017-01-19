@@ -66,15 +66,15 @@ public class Board {
     //@ requires 0 <= y & y < DIM;
     //@ requires 0 <= z & z < DIM;
     /*@pure*/
-<<<<<<< HEAD
+// HEAD
    // public int index(int x, int y, int z) {
     //	return "x"+ "y" + "z";
     //}
-=======
-    public int index(int x, int y, int z) {
-    	return DIM*x + y + DIM*DIM*z;
-    }
->>>>>>> branch 'master' of https://github.com/rms123/Program-Project.git
+
+//    public int index(int x, int y, int z) {
+  //  	return DIM*x + y + DIM*DIM*z;
+    //}
+//github.com/rms123/Program-Project.git
 
     /**
      * Returns true of the (x,y,z)  refers to a valid field on the student.
