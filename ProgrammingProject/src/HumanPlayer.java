@@ -3,10 +3,10 @@
 import java.util.Scanner;
 
 /**
- * Class for maintaining a human player in Tic Tac Toe. Module 2 lab assignment
+ * Class for maintaining a human player in ConnectFour
  * 
- * @author Theo Ruys
- * @version $Revision: 1.4 $
+ * 
+ * @version $Revision: 1 $
  */
 public class HumanPlayer extends Player {
 
@@ -14,7 +14,7 @@ public class HumanPlayer extends Player {
 
     /*@
        requires name != null;
-       requires mark == Mark.XX || mark == Mark.OO;
+       requires mark == Mark.RED || mark == Mark.YELLOW;
        ensures this.getName() == name;
        ensures this.getMark() == mark;
     */
