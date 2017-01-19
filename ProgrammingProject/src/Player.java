@@ -75,7 +75,22 @@ public abstract class Player {
      */
     public void makeMove(Board board) {
         int choice = determineMove(board);
-        String temp = Integer.toString(choice);
+        String temp="";
+        for (int x = 0; x < 34; x++){
+        	if (choice == x){
+        		if (x<9) { 
+        			temp = "000";
+        			break;
+        		}else{ temp = "0" + x; 
+        			break;
+        		}
+        	}
+
+        	else{ 
+        		temp = Integer.toString(choice);
+        	}
+        }
+
         int[] newGuess = new int[temp.length()];
         for (int i = 0; i < temp.length(); i++)
         {

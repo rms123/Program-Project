@@ -8,8 +8,8 @@
  */
 public class Board {
     public static final int DIM = 4;
-    private static final String[] NUMBERING = {" 0 | 1 | 2 ", "---+---+---",
-        " 3 | 4 | 5 ", "---+---+---", " 6 | 7 | 8 "};
+    private static final String[] NUMBERING = {" 00Z | 01Z | 02Z | 03Z ", "______________",
+    		" 10Z | 11Z | 12Z | 13Z ", "______________", " 20Z | 21Z | 22Z | 23Z ","______________", " 30Z | 31Z | 32Z | 33Z ","______________"};
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
 
