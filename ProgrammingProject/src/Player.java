@@ -2,12 +2,12 @@
 
 
 /**
- * Abstract class for keeping a player in the Tic Tac Toe game. Module 2 lab
+ * Abstract class for keeping a player in the ConnectFour.
  * assignment.
  * 
  * 
- * @author Theo Ruys en Arend Rensink
- * @version $Revision: 1.4 $
+ * 
+ * @version $Revision: 1 $
  */
 public abstract class Player {
 
@@ -20,7 +20,7 @@ public abstract class Player {
 
     /*@
        requires name != null;
-       requires mark == Mark.XX || mark== Mark.OO;
+       requires mark == Mark.RED || mark== Mark.YELLOW;
        ensures this.getName() == name;
        ensures this.getMark() == mark;
      */
