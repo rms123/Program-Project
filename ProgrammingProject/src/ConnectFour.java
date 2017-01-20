@@ -1,5 +1,6 @@
 	
 import java.io.*;
+
 /**
  * Executable class for the game Tic Tac Toe. The game can be played against the
  * computer. Lab assignment Module 2
@@ -33,15 +34,27 @@ public class ConnectFour {
             // Don't do anything
         }
     }
+	public static Player determinePlayer(String arg, Mark mark) { 
+    	String argu = arg.toUpperCase();
+    	if (argu.equals("-N")) {
+    		return new ComputerPlayer(mark, new NaiveStrategy());
+    	}else if (argu.equals("-S")){
+    		return new ComputerPlayer(mark, new SmartStrategy()); 
+    	}else {
+    		return new HumanPlayer(arg, mark); 
+    	}
+    }
 	
     public static void main(String[] args) {
-    	System.setIn(new UncloseableInputStream());
-    	Player p1 = new HumanPlayer(args[0].toString(), Mark.YELLO);
-    	//Player p2 = new HumanPlayer(args[0].toString(), Mark.REDDD);
-    	Player p2 = new ComputerPlayer(Mark.REDDD, new SmartStrategy());
-    	Game game = new Game(p1,p2);
-    	game.start();
+    	if (args.length ==2){
+    		System.setIn(new UncloseableInputStream());
+    	    Player p1 = determinePlayer(args[0], Mark.REDDD); 
+        	Player p2 = determinePlayer(args[1], Mark.YELLO); 
+        	Game game = new Game(p1, p2); 
+        	game.start();
+    	}else{
+    		System.out.println("need more arguments");
+    	}
+    	
     }
-    
-    
 }
