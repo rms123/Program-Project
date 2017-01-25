@@ -1,3 +1,4 @@
+package connect4;
 public class SmartStrategy implements Strategy{
 	public String getName() { 
 		return "Smart"; 

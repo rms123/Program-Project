@@ -1,3 +1,4 @@
+package connect4;
 
 
 public class ComputerPlayer extends Player{
