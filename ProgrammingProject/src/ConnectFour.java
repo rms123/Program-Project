@@ -53,7 +53,7 @@ public class ConnectFour {
         	Game game = new Game(p1, p2); 
         	game.start();
     	}else{
-    		System.out.println("need more arguments");
+    		System.out.println("Please input two arguments");
     	}
     	
     }
