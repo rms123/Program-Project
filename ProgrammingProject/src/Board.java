@@ -93,9 +93,9 @@ public class Board {
      */
     //@ ensures \result == (0 <= index && index < DIM * DIM*DIM);
     /*@pure*/
-    public Boolean isField(int index) {
-    	return (0<= index && index < DIM*DIM*DIM);
-    }
+    //public Boolean isField(int index) {
+    //	return (0<= index && index < DIM*DIM*DIM);
+    //}
     
     /**
      * Returns the content of the field i.
