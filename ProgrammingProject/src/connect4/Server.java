@@ -1,33 +1,55 @@
 package connect4;
+
 import java.io.IOException;
-import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+import java.net.UnknownHostException;
 
+/**
+ * Server. 
+ * @author  Theo Ruys
+ * @version 2005.02.21
+ */
 public class Server {
+	private static final String USAGE
+	= "usage: " + Server.class.getName() + " <name> <port>";
+
 	
-	public static void main (String args[]) throws IOException{
-		int temp;
-		int number, number2;
-		// get port number
-		ServerSocket s1 = new ServerSocket(1342);
-		Socket ss = s1.accept();
-		Scanner sc = new Scanner(ss.getInputStream());
-		number = sc.nextInt();
-		// Make new connection with the by the client provided port number
-		ServerSocket s2 = new ServerSocket(number);
-		Socket ss2 = s2.accept();
-		Scanner sc2 = new Scanner(ss2.getInputStream());
-		number2 = sc2.nextInt();
-		// accept client input
-	
-		// modification
-		temp = number2*2;
-		//send back to client
-		PrintStream p = new PrintStream(ss2.getOutputStream());
-		p.println(temp);
+	public static void main(String[] args) throws IOException { 
 		
+		int port = Integer.parseInt(args[1]); 
+		if (args.length != 2) { 
+			System.out.println("Could not read port"); 
+			System.out.println(Server.USAGE); 
+			System.exit(1); 
+		} 
+
+		ServerSocket serv = null; 
+		try { 
+			serv = new ServerSocket(port); 
+		} catch (IOException e1) { 
+			System.out.println("Cannot open socket"); 
+			System.err.println(e1);
+			System.exit(1); 
+		} 
+		while(!serv.isClosed()){
+			Socket sock = null;
+			try {
+				sock = serv.accept() ;
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try{
+				ClientHandler clientHandler = new ClientHandler(args[0], sock);
+				Thread thread = new Thread(clientHandler);
+				thread.start();
+				//			peer.handleTerminalInput();
+				//			peer.shutDown();
+				//			sock.close();
+			} catch (IOException e1){
+				e1.printStackTrace();
+			}
+		}
 	}
-	
 }
