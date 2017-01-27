@@ -132,16 +132,16 @@ public class Client implements Observer {
     			player1 = scanner.next();
     			player2 = scanner.next();
     			String otherPlayer = player1;
-    			myMark = Mark.OO;
+    			myMark = Mark.REDDD;
     			if (player1.equals(tui.username)) {
     				otherPlayer = player2;
-    				myMark = Mark.XX;
+    				myMark = Mark.YELLO;
     			}
     			System.out.println("You have entered a game with " + otherPlayer + ". Are you ready? (usage: ready/decline)");
     			tui.removeCommands("play human", "play computer");
     			tui.addCommands("ready", "decline");
-    			board = new Board(tui.dimension);
-    			board.addObserver(this);
+    			board = new Board();
+    			//board.addObserver(this);
     			System.out.println("game started on a board with DIM " + tui.dimension);
     			tui.copyBoard(board);
     			tui.myMark = this.myMark;
@@ -167,9 +167,9 @@ public class Client implements Observer {
     			String userInTurn1 = scanner.next();
     			System.out.println(userInTurn1 + " made a move.");
     			if (userInTurn1.equals(tui.username)) {
-    				board.setField(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), myMark);
+    				board.setField(scanner.nextInt(), scanner.nextInt(), myMark);
     			} else {
-    				board.setField(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), myMark.other());
+    				board.setField(scanner.nextInt(), scanner.nextInt(),  myMark.other());
     			}
     			tui.copyBoard(board);
     			break;
@@ -193,37 +193,6 @@ public class Client implements Observer {
     			tui.removeCommands("move", "hint");
     			tui.addCommands("play human", "play computer");
     			break;
-    		
-    			
-    		// ====== OPTIONALS ======
-    		// Chat
-    		case Protocol.BROADCAST:
-    			//do this
-    			break;
-    		case Protocol.WHISPER:
-    			//do this
-    			break;
-    		case Protocol.CHATUSER:
-    			//do this
-    			break;
-    		case Protocol.GAMECHAT:
-    			//do this
-    			break;
-    		case Protocol.ERROR_USER_HAS_NO_CHAT:
-    			//do this
-    			break;
-    		case Protocol.ERROR_USER_NOT_FOUND:
-    			//do this
-    			break;
-    		case Protocol.ERROR_NOT_IN_GAME:
-    			//do this
-    			break;
-    		
-    		// Challenge
-    		
-    		// Leaderboard
-    			
-    		// Password
     		
     		// Other
     		case Protocol.ERROR_COMMAND_NOT_RECOGNIZED:
