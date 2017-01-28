@@ -1,6 +1,15 @@
-package connect4;
+package client;
 
 import java.net.Socket;
+
+import connect4.ComputerPlayer;
+import connect4.Game;
+import connect4.HumanPlayer;
+import connect4.Mark;
+import connect4.Player;
+import connect4.Protocol;
+import server.Server;
+import server.ServerTui;
 
 import java.io.IOException;
 import java.io.BufferedReader;

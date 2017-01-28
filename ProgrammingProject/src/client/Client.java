@@ -1,4 +1,4 @@
-package connect4;
+package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +8,10 @@ import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
+
+import connect4.Board;
+import connect4.Mark;
+import connect4.Protocol;
 
 
 public class Client implements Observer {

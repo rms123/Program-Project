@@ -1,4 +1,4 @@
-package connect4;
+package client;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,6 +9,13 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+
+import connect4.Board;
+import connect4.Mark;
+import connect4.Player;
+import connect4.Protocol;
+import connect4.SmartStrategy;
+import connect4.Strategy;
 
 
 public class ClientTui implements Runnable {

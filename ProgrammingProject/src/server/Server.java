@@ -1,10 +1,13 @@
-package connect4;
+package server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+
+import client.ClientHandler;
+
 import java.util.HashMap;
 import java.io.IOException;
 

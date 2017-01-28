@@ -1,4 +1,4 @@
-package connect4;
+package server;
 
 import java.util.Set;
 import java.util.HashSet;

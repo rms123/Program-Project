@@ -1,5 +1,7 @@
-package connect4;
+package server;
 import java.util.Scanner;
+
+import connect4.Protocol;
 
 
 

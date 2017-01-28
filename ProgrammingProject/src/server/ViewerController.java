@@ -1,7 +1,9 @@
-package connect4;
+package server;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import connect4.Board;
 
 
 
