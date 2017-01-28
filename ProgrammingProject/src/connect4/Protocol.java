@@ -1,91 +1,112 @@
 package connect4;
-
 public interface Protocol {
-	
-	public static final String DELIMITER = ";";
-	public static final int DIM = 4;
 
-	/* --------------------------- Connect to server ----------------------- */
-	/**
-	 * 1.Client handshakes with server,via the port number 
-	 * 2.Client sends user name and the extra extensions to the server 
-	 * HELLO <username> [EXT_CHALLENGE] [EXT_CHAT] [EXT_LEADERBOARD] [EXT_PASSWORD] 
-	 * 3.Server accepts user name or sends an error that the user name is taken 
-	 * HELLO [EXT_CHALLENGE] [EXT_CHAT] [EXT_LEADERBOARD] [EXT_PASSWORD]
-	 * ERROR_USERNAMETAKEN
-	 */
-	public static final int PORTNUMBER = 1337;
-	//2.
-	public static final String HELLO = "HELLO";
-	public static final String EXT_CHAT = "EXT_CHAT";
-	public static final String EXT_CHALLENGE = "EXT_CHALLENGE";
-	public static final String EXT_LEADERBOARD = "EXT_LEADERBOARD";
-	public static final String EXT_PASSWORD = "EXT_PASSWORD";
-	// 3. Exception
-	public static final String ERROR_USERNAMETAKEN = "ERROR_USERNAMETAKEN";
+    // Client -> Server
 
-	/* --------------------------- Start a game --------------------------- */
-	/**
-	 * During the lecture we discussed the possibility to play with several
-	 * players, playing with 2 players is enough, therefore the protocol has
-	 * been changed
-	 */
-	
-	/**
-	 * 1. Player chooses with what kind of user he likes to play -Human player
-	 * to human player 
-	 * PLAY HUMAN [DIM] 
-	 * -Human player to computer player 
-	 * PLAY COMPUTER [DIM] 
-	 * 2. Server: sends wait, when the player has to wait for
-	 * another player 
-	 * WAIT 
-	 * 3. Server: sends ready when the game can start 
-	 * READY <username1> <username2> 
-	 * 4. Client: responds with READY when they want to
-	 * start, DECLINE otherwise 
-	 * READY 
-	 * DECLINE 
-	 * 5. Server: requests a move from
-	 * the user whose turn it is, this message is send to both players
-	 * REQUESTMOVE <username> 
-	 * 6. Client: Make move with the coordinates 
-	 * MAKEMOVE <x> <y> <z> 
-	 * 7. Server will either send setmove when the move was valid to
-	 * everyone; invalid move when it was invalid to the user, or not your turn
-	 * when it was not his turn. 
-	 * SETMOVE <username> <x> <y> <z>
-	 * ERROR_INVALIDMOVE <x> <y> <z> 
-	 * ERROR_NOTYOURTURN 
-	 * 8. Server: when the game is not over, the server requests a new move. When the game is over its
-	 * told to both players, and when there is a winner this name is added.
-	 * GAMEOVER [username of winner] 
-	 * When someone quits the game an error is
-	 * send and user moves back to the lobby 
-	 * ERROR_USERQUIT <username of quiter>
-	 * The timeout is set on 20 seconds.
-	 */
-	// 1.
-	public static final String PLAY = "PLAY";
-	public static final String HUMAN = "HUMAN";
-	public static final String COMPUTER = "COMPUTER";
-	// 2.
-	public static final String WAIT = "WAIT";
-	// 3. and 4.
-	public static final String READY = "READY";
-	public static final String DECLINE = "DECLINE";
-	// 5.
-	public static final String REQUESTMOVE = "REQUESTMOVE";
-	// 6.
-	public static final String MAKEMOVE = "MAKEMOVE";
-	// 7.
-	public static final String SETMOVE = "SETMOVE";
-	public static final String ERROR_INVALIDMOVE = "ERROR_INVALIDMOVE";
-	public static final String ERROR_NOTYOURTURN = "ERROR_NOTYOURTURN";
-	// 8. (Gameover)
-	public static final String GAMEOVER = "GAMEOVER";
-	// Exception (Quit)
-	public static final String ERROR_USERQUIT = "ERROR_USERQUIT";
-	public static final String ERROR_COMMAND_NOT_RECOGNIZED = "ERROR_COMMAND_NOT_RECOGNIZED";
+    /**
+     * Connect this client.
+     * Example: <code>CONNECT stevejobs 01</code>
+     * Or: <code>CONNECT hans</code>
+     */
+    public static final String CONNECT = "CONNECT";
 
+    /**
+     * Disconnect this client.
+     */
+    public static final String DISCONNECT = "DISCONNECT";
+
+    /**
+     * Readies this client.
+     * Shouldn't be send when this client is already in this state.
+     */
+    public static final String READY = "GAME READY";
+
+    /**
+     * Unreadies this client.
+     * Shouldn't be send when this client is already in this state
+     */
+    public static final String UNREADY = "GAME UNREADY";
+
+    /**
+     * Used to send move by a client.
+     * Example: <code>GAME MOVE 2 1</code>
+     */
+    public static final String CLIENT_MOVE = "GAME MOVE";
+
+    /**
+     * Requests list of players on this server.
+     */
+    public static final String ASK_PLAYERS_ALL = "PLAYERS ALL";
+
+    /**
+     * Requests list of players with certain extensions.
+     * Example: <code>PLAYERS 012</code>: Request players with extensions 0, 1 AND 2 installed.
+     */
+    public static final String ASK_PLAYERS_EXT = "PLAYERS %s";
+
+    // All Server -> Client communication
+
+    /**
+     * Used to confirm connection. Can also contain server-supported extensions.
+     */
+    public static final String CONFIRM = "CONFIRM ";
+
+    /**
+     * Inform client game will start.
+     * LAST ARGUMENT CAN BE MULTIPLE NAMES!
+     * Example: <code>GAME START bob peter</code>
+     */
+    public static final String START = "GAME START";
+
+    /**
+     * Broadcasted message announcing current move and future move (if applicable).
+     * Example with future move: <code>GAME MOVE bob 2 0 hans</code> (Current move by bob at (2,0), next is hans).
+     * Example without: <code>GAME MOVE hans 2 2</code> (Current move by hans at (2,2), this was final turn).
+     */
+    public static final String SERVER_MOVE = "GAME MOVE";
+
+    /**
+     * Broadcasted when game has ended in draw.
+     */
+    public static final String END_DRAW = "GAME END DRAW";
+
+    /**
+     * Broadcasted when game has ended in winner.
+     * Example: <code>GAME END PLAYER hans</code>: hans has won the game.
+     */
+    public static final String END_WINNER = "GAME END PLAYER";
+
+    /**
+     * Result of player list query.
+     * LAST ARGUMENTS CAN BE MULTIPLE NAMES.
+     * Example: <code>PLAYERS ALL hans peter dirk tessa</code>: All players in this server are these.
+     */
+    public static final String RES_PLAYERS_ALL = "PLAYERS ALL";
+
+    /**
+     * Result of player list query with extension criteria.
+     * LAST ARGUMENT CAN BE MULTIPLE NAMES.
+     * Example: <code>PLAYERS 0 hans</code>: Of people on the server, only hans supports extension 0.
+     */
+    public static final String RES_PLAYERS_EXT =  "PLAYERS %s %s";
+
+    public enum Error {
+        // General errors
+        INTERNAL_ERROR("000"),
+        UNKNOWN_METHOD("010"),
+        ILLEGAL_SYNTAX("011"),
+        TIMEOUT("012"),
+
+        // Server errors
+        ILLEGAL_MOVE("120"),
+        PLAYER_DISCONNECT("110"),
+        ILLEGAL_METHOD_USE("111"),
+        USER_ALREADY_CONNECTED("190"),
+        USER_NOSUPPORT_EXTENSION("191");
+
+        public final String code;
+        Error(String code) {
+            this.code = code;
+        }
+    }
 }
