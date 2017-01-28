@@ -16,7 +16,7 @@ import exceptions.serverErrors.UserAlreadyConnectedException;
 import main.Protocol;
 import model.Mark;
 
-public class ClientThread extends Thread {
+public class ClientHandler extends Thread {
 	private Socket socket;
 	private InputStream input;
 	private OutputStream output;
@@ -27,9 +27,9 @@ public class ClientThread extends Thread {
 	private Mark mark;
 	private Integer[] moveBuffer;
 
-	private ServerGameThread gameThread;
+	private ServerGameHandler gameThread;
 
-	public ClientThread(Socket s, Server svr) throws IOException {
+	public ClientHandler(Socket s, Server svr) throws IOException {
 		socket = s;
 		input = socket.getInputStream();
 		output = socket.getOutputStream();
@@ -103,7 +103,7 @@ public class ClientThread extends Thread {
 
 	public void connect(String[] text) throws UserAlreadyConnectedException {
 		boolean exists = false;
-		for (ClientThread clientThread : server.getConnectedClients()) {
+		for (ClientHandler clientThread : server.getConnectedClients()) {
 			if (clientThread.getClientName().equals(text[1])) {
 				exists = true;
 			}
@@ -163,7 +163,7 @@ public class ClientThread extends Thread {
 
 	public void writePlayersAll() {
 		String players = Protocol.RES_PLAYERS_ALL;
-		for (ClientThread ct : server.getConnectedClients()) {
+		for (ClientHandler ct : server.getConnectedClients()) {
 			players = players + " " + ct.getClientName();
 		}
 		writeToClient(players);
@@ -189,7 +189,7 @@ public class ClientThread extends Thread {
 		this.mark = mark;
 	}
 
-	public void setGameThread(ServerGameThread gameThread) {
+	public void setGameThread(ServerGameHandler gameThread) {
 		this.gameThread = gameThread;
 	}
 

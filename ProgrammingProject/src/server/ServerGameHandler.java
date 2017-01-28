@@ -7,16 +7,16 @@ import main.Protocol;
 import model.Board;
 import model.Mark;
 
-public class ServerGameThread extends Thread {
-	private ClientThread clientThread1;
-	private ClientThread clientThread2;
+public class ServerGameHandler extends Thread {
+	private ClientHandler clientThread1;
+	private ClientHandler clientThread2;
 	private Board board;
 	private int playerAmount;
 	private int turn = 0;
 	private boolean disconnect;
-	private ClientThread disconnectedThread;
+	private ClientHandler disconnectedThread;
 
-	public ServerGameThread(ClientThread ct1, ClientThread ct2) {
+	public ServerGameHandler(ClientHandler ct1, ClientHandler ct2) {
 		clientThread1 = ct1;
 		clientThread2 = ct2;
 		clientThread1.setMark(Mark.X);
@@ -73,7 +73,7 @@ public class ServerGameThread extends Thread {
 
 	}
 
-	public ClientThread determineTurn() {
+	public ClientHandler determineTurn() {
 		turn = turn % playerAmount;
 		if (turn == 0) {
 			return clientThread1;
@@ -82,7 +82,7 @@ public class ServerGameThread extends Thread {
 		}
 	}
 
-	public Integer[] makeMove(ClientThread ct)
+	public Integer[] makeMove(ClientHandler ct)
 			throws IllegalMoveException, InterruptedException, PlayerDisconnectException {
 		while (ct.getMoveBuffer() == null && !disconnect) {
 			sleep(1);
@@ -101,7 +101,7 @@ public class ServerGameThread extends Thread {
 		return coords;
 	}
 
-	public ClientThread getWinner() throws InternalErrorException {
+	public ClientHandler getWinner() throws InternalErrorException {
 		if (board.isWinner(clientThread1.getMark())) {
 			return clientThread1;
 		}
@@ -121,7 +121,7 @@ public class ServerGameThread extends Thread {
 		return "game " + clientThread1.getClientName() + " " + clientThread2.getClientName();
 	}
 
-	public void setDisconnect(boolean disc, ClientThread ct) {
+	public void setDisconnect(boolean disc, ClientHandler ct) {
 		this.disconnect = disc;
 		this.disconnectedThread = ct;
 

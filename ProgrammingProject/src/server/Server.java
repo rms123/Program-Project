@@ -12,19 +12,19 @@ import java.util.List;
 public class Server {
 	private int port;
 	private ServerSocket serversocket;
-	private List<ClientThread> connectCli;
-	private List<ClientThread> readyCli;
+	private List<ClientHandler> connectCli;
+	private List<ClientHandler> readyCli;
 	
 	public Server() {
-		this.connectCli = new ArrayList<ClientThread>();
-		this.readyCli = new ArrayList<ClientThread>();
+		this.connectCli = new ArrayList<ClientHandler>();
+		this.readyCli = new ArrayList<ClientHandler>();
 	}
 	
-	public List<ClientThread> getConnectClients() {
+	public List<ClientHandler> getConnectClients() {
 		return connectCli;
 	}
 	
-	public List<ClientThread> getReadyClients() {
+	public List<ClientHandler> getReadyClients() {
 		return readyCli;
 	}
 
@@ -46,7 +46,7 @@ public class Server {
 		while (running) {
 			try {
 				Socket socket = server.serversocket.accept();
-				Thread clientThread = new ClientThread(socket, server);
+				Thread clientThread = new ClientHandler(socket, server);
 				clientThread.start();
 			} catch (IOException e) {
 				//this is for the time out
@@ -58,7 +58,7 @@ public class Server {
 	}
 
 	public void startGame() {
-		Thread game = new ServerGameThread(getReadyClients().get(0), getReadyClients().get(1));
+		Thread game = new ServerGameHandler(getReadyClients().get(0), getReadyClients().get(1));
 		getReadyClients().remove(1);
 		getReadyClients().remove(0);
 		game.start();
