@@ -1,11 +1,7 @@
 package server;
+import connect4.*;
+import exceptions.*;
 
-import exceptions.generalErrors.InternalErrorException;
-import exceptions.serverErrors.IllegalMoveException;
-import exceptions.serverErrors.PlayerDisconnectException;
-import main.Protocol;
-import model.Board;
-import model.Mark;
 
 public class ServerGameHandler extends Thread {
 	private ClientHandler clientThread1;
@@ -16,11 +12,11 @@ public class ServerGameHandler extends Thread {
 	private boolean disconnect;
 	private ClientHandler disconnectedThread;
 
-	public ServerGameHandler(ClientHandler ct1, ClientHandler ct2) {
-		clientThread1 = ct1;
-		clientThread2 = ct2;
-		clientThread1.setMark(Mark.X);
-		clientThread2.setMark(Mark.O);
+	public ServerGameHandler(ClientHandler client1, ClientHandler client2) {
+		clientThread1 = client1;
+		clientThread2 = client2;
+		clientThread1.setMark(Mark.REDDD);
+		clientThread2.setMark(Mark.YELLO);
 		clientThread1.setGameThread(this);
 		clientThread2.setGameThread(this);
 		board = new Board();
@@ -47,7 +43,7 @@ public class ServerGameHandler extends Thread {
 						broadcast(Protocol.SERVER_MOVE + " " + ctMadeMove + " " + coords[0] + " " + coords[1]);
 					}
 
-				} catch (IllegalMoveException | InterruptedException e) {
+				} catch (NonvalidMoveException | InterruptedException e) {
 					this.determineTurn().writeToClient(e.getMessage());
 					moveMade = false;
 				} catch (PlayerDisconnectException e) {
@@ -65,7 +61,7 @@ public class ServerGameHandler extends Thread {
 			try {
 				broadcast(Protocol.END_WINNER + " " + getWinner().getClientName());
 				System.out.println(toString() + " won by " + getWinner().getClientName());
-			} catch (InternalErrorException e) {
+			} catch (ErrorException e) {
 				broadcast(Protocol.END_DRAW);
 				System.out.println(toString() + " ended in a draw");
 			}
@@ -82,33 +78,32 @@ public class ServerGameHandler extends Thread {
 		}
 	}
 
-	public Integer[] makeMove(ClientHandler ct)
-			throws IllegalMoveException, InterruptedException, PlayerDisconnectException {
-		while (ct.getMoveBuffer() == null && !disconnect) {
+	public Integer[] makeMove(ClientHandler client)throws NonvalidMoveException, InterruptedException, PlayerDisconnectException {
+		while (client.getMoves() == null && !disconnect) {
 			sleep(1);
 		}
 		if (disconnect) {
 			throw new PlayerDisconnectException();
 		}
-		Integer[] coords = ct.getMoveBuffer();
+		Integer[] coords = client.getMoves();
 		for (Integer coord : coords) {
 			if (coord >= board.getDIM() || coord < 0) {
-				throw new IllegalMoveException();
+				throw new NonvalidMoveException();
 			}
 		}
-		board.setField(coords[0], coords[1], ct.getMark());
-		ct.setMoveBuffer(null);
+		board.setField(coords[0], coords[1], client.getMark());
+		client.setMoves(null);
 		return coords;
 	}
 
-	public ClientHandler getWinner() throws InternalErrorException {
+	public ClientHandler getWinner() throws ErrorException {
 		if (board.isWinner(clientThread1.getMark())) {
 			return clientThread1;
 		}
 		if (board.isWinner(clientThread2.getMark())) {
 			return clientThread2;
 		} else {
-			throw new InternalErrorException();
+			throw new ErrorException();
 		}
 	}
 

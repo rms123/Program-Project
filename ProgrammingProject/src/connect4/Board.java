@@ -57,6 +57,10 @@ public class Board {
     	}
     	return newBoard;
     }
+    
+    public int getDIM(){
+    	return DIM;
+    }
 
     /**
      * Calculates the index in the linear array of fields from a (x, y, z)
