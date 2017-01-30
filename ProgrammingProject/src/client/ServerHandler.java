@@ -7,19 +7,16 @@ import java.io.InputStreamReader;
 import java.io.PipedWriter;
 import java.net.Socket;
 
-import controller.Game;
-import controller.players.OnlinePlayer;
-import main.Protocol;
-import model.Mark;
+import connect4.*;
 
-public class ServerInputHandler extends Thread {
+public class ServerHandler extends Thread {
 	private BufferedReader input;
 	private boolean running;
 	private Client client;
 	private OnlinePlayer opponent;
 	private Game gameThread;
 
-	public ServerInputHandler(BufferedReader reader, Client clt) throws IOException {
+	public ServerHandler(BufferedReader reader, Client clt) throws IOException {
 		input = reader;
 		client = clt;
 	}
