@@ -60,7 +60,7 @@ public class ClientHandler extends Thread {
 							doMove(text);
 						} else {
 							throw new MethodErrorException(
-									"possible causes:\n" + "- not in game\n" + "- not your turn");
+									"error causes: maybe it's not your turn or not in a game" );
 						}
 					} else {
 						throw new MethodUnknowException();
@@ -69,14 +69,11 @@ public class ClientHandler extends Thread {
 					disconnect();
 				}
 			} catch (IOException e) {
-				System.out.println("IO - exception in run. Unexpected disconnect by" + this.getName()
-						+ ".\n Terminating ClientThread...");
+				System.out.println(this.getName()+ "has diconnect");
 				try {
 					disconnect();
 					running = false;
-				} catch (MethodErrorException e1) {
-					// do nothing (unexpected behaviour already occured an is
-					// repported to server)
+				} catch (MethodErrorException ee) {
 				}
 				running = false;
 			} catch (UserNameExistException e) {
