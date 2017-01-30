@@ -2,8 +2,8 @@
 change ServerGameHandler.java
 
 change Client.java
-change ClientHandler.java
-change ClientTui.java
+change ServerHandler.java
+
 
 change Protocol.java
 

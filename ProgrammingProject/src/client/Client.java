@@ -1,222 +1,161 @@
 package client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Scanner;
 
-import connect4.Board;
-import connect4.Mark;
-import connect4.Protocol;
+import connect4.*;
 
+public class Client {
 
-public class Client implements Observer {
-    private static final String USAGE
-    = "usage: java connectfour.Client <address>";
-    private static final String COMMANDS
-	= "play human [dimension] \n"
-	+ "play computer [dimension] \n"
-	+ "ready \n"
-	+ "decline \n"
-	+ "move <index> \n"
-	+ "hint";
-    
-    private String player1; // first player
-    private String player2; // second player
-    private Mark myMark; // this player's mark
-    private ClientTui tui = new ClientTui();
-    private Board board;
-    // private ViewerController view; // TODO: 3d view of the game
- 
-    /**
-     * Constructor method
-     */
-    public Client() {
-    	this.start();
-    }
-    
-    /**
-     * Start method. Starts by asking for a host and portnumber. With these given the method
-     * tries to create a socket with the specified data. When the socket is made the TUI is put
-     * into a seperate thread and this method continues the monitoring of the inputStream.
-     */
-    public void start() {
-    	InetAddress addr = null;
-    	Socket sock = null;
-    	BufferedReader in;	
-    	String host = "localhost";
-    	// try to open a Socket to the server
-    	int pn = Protocol.PORTNUMBER; // portnumber
-    	boolean sockAccepted = false;
-    	while (!sockAccepted) {
-    		
-        	while (addr == null) {
-        		try {
-        			host = tui.askHost();
-        			addr = InetAddress.getByName(host);
-        		} catch (UnknownHostException e) {
-        			System.out.println(USAGE);
-        			System.out.println("ERROR: host " + host + " unknown. Try again.");
-        			// System.exit(0);
-        		}
-        	} 		
-    		
-    		try {
-    			pn = tui.askPort();
-    			sock = new Socket(addr, pn);
-    			System.out.println("Connected to " + addr + ":" + pn + " \n");
-    			sockAccepted = true;
-    		} catch (Exception e) {
-    			System.out.println("ERROR: could not create a socket on " + addr
-    					+ " and port " + pn);
-    			addr = null;
-    		}
-    	}
-    	
-        // create ClientTui object in a new thread and start the two-way communication.
-    	// The new thread is created to maintain one process: the output.
-    	//tui = new ClientTui(sock);
-    	tui.setSocket(sock);
-        Thread streamInputHandler = new Thread(tui);
-        streamInputHandler.start();
-        
-        // Handle all incoming communication: the input.
-        try {
-			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			while (!sock.isClosed()) {
-				try {
-					if (in.ready()) {	
-						processInput(in.readLine());
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}   	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    
-    /**
-     * Method for processing input from the server.
-     * 
-     * @param input The input message from the server.
-     */
-    public void processInput(String input) {
-    	Scanner scanner = new Scanner(input);
-    	scanner.useDelimiter(Protocol.DELIMITER);
-    	String command = scanner.next();
-    	switch (command) {
-    		
-    		// Connect to a server:
-    		case Protocol.HELLO:
-    			System.out.println("Succesfully connected to the server with " + (scanner.hasNext() ? scanner.next() : "no extensions") + (scanner.hasNext() ? scanner.next() : "") + (scanner.hasNext() ? scanner.next() : "") + (scanner.hasNext() ? scanner.next() : "") + " enabled! \n"
-    					+ "Use 'play human [dimension]' or 'play computer [dimension]' to begin a game agains a human player or a computer. \n\n");
-    			tui.usernameSet = true;
-    			tui.addCommands("play human", "play computer", "exit");
-    			break;
-    		case Protocol.ERROR_USERNAMETAKEN:
-    			System.out.print("This username is already in use, please enter another username: ");
-    			break;
-    		
-    		// Starting a game
-    		case Protocol.WAIT:
-    			System.out.println("You are currently waiting for a game...");
-    			tui.removeCommands("play human", "play computer");
-    			//TODO: maybe add the command Decline? This way the user can stop waiting.
-    			break;
-    		case Protocol.READY:
-    			player1 = scanner.next();
-    			player2 = scanner.next();
-    			String otherPlayer = player1;
-    			myMark = Mark.REDDD;
-    			if (player1.equals(tui.username)) {
-    				otherPlayer = player2;
-    				myMark = Mark.YELLO;
-    			}
-    			System.out.println("You have entered a game with " + otherPlayer + ". Are you ready? (usage: ready/decline)");
-    			tui.removeCommands("play human", "play computer");
-    			tui.addCommands("ready", "decline");
-    			board = new Board();
-    			//board.addObserver(this);
-    			System.out.println("game started on a board with DIM " + tui.dimension);
-    			tui.copyBoard(board);
-    			tui.myMark = this.myMark;
-    			// view = new ViewerController();
-    			break;
-    		
-    		// Playing a game
-    		case Protocol.REQUESTMOVE:
-				tui.removeCommands("ready", "decline");
-				tui.addCommands("move", "hint");
-    			String userInTurn = scanner.next();
-    			if (userInTurn.equals(tui.username)) {
-    				if (tui.isClientComputer) {
-    					tui.makeMove();
-    				} else {
-    					System.out.println("It is your turn! Please make a move! (usage: move <index>)");
-    				}
-    			} else {
-    				System.out.println("It is " + userInTurn + "'s turn! Please wait for your turn...");
-    			}
-    			break;
-    		case Protocol.SETMOVE:
-    			String userInTurn1 = scanner.next();
-    			System.out.println(userInTurn1 + " made a move.");
-    			if (userInTurn1.equals(tui.username)) {
-    				board.setField(scanner.nextInt(), scanner.nextInt(), myMark);
-    			} else {
-    				board.setField(scanner.nextInt(), scanner.nextInt(),  myMark.other());
-    			}
-    			tui.copyBoard(board);
-    			break;
-    		case Protocol.ERROR_INVALIDMOVE:
-    			System.out.println("This is an invalid move! Please try again.");
-    			break;
-    		case Protocol.ERROR_NOTYOURTURN:
-    			System.out.println("Hold on there, cowboy! It isn't your turn yet!");
-    			break;
-    		case Protocol.GAMEOVER:
-    			if (scanner.hasNext()) {
-    				System.out.println("Game over! User " + scanner.next() + " has won the game");
-    			} else {
-    				System.out.println("Game over! Ended in a draw.");
-    			}
-    			tui.removeCommands("move", "decline", "ready", "hint");
-    			tui.addCommands("play human", "play computer");
-    			break;
-    		case Protocol.ERROR_USERQUIT:
-    			System.out.println("User " + scanner.next() + " is a chicken. He cowarded out!");
-    			tui.removeCommands("move", "hint");
-    			tui.addCommands("play human", "play computer");
-    			break;
-    		
-    		// Other
-    		case Protocol.ERROR_COMMAND_NOT_RECOGNIZED:
-    			System.out.println("Command has not been recognized by the server! Please use one of the commands below:");
-    			System.out.println(COMMANDS);
-    			break;
-    	}
-    	
-    	scanner.close();
-    }
-    
-    @Override
-	public void update(Observable o, Object arg) {
-    	System.out.println(board.toString());
+	public static final String HELP = "HELP";
+	public static final String GIVEHELP = "List of commands:\n" + "DISCONNECT: disconnect from server and exit\n"
+			+ "PLAYERS ALL: get list of players that are connected to server\n"
+			+ "GAME READY: notify server you are ready to play a game\n"
+			+ "GAME UNREADY: notify server that you are not ready anymore to play a game\n";
+
+	private String name;
+	private int port;
+	private InetAddress ipAddress;
+	private Socket sock;
+	private BufferedReader reader;
+	private PrintWriter writer;
+	private BufferedReader terminalReader;
+	private ServerHandler ServerHandler;
+	private Player player;
+	private boolean hasTurn;
+
+	public Client() {
+		terminalReader = new BufferedReader(new InputStreamReader(System.in));
+		hasTurn = false;
 	}
-    
-    /** Starts a Client application. */
-    public static void main(String[] args) {
-    	new Client();
-    }
 
-    
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.reader = null;
+		client.writer = null;
+		boolean infoReady = false;
+		while (!infoReady) {
+			try {
+				client.getConnectionInfo();
+				client.getPlayerInfo();
+				client.sock = new Socket(client.ipAddress, client.port);
+				client.reader = new BufferedReader(new InputStreamReader(client.sock.getInputStream()));
+				client.writer = new PrintWriter(new OutputStreamWriter(client.sock.getOutputStream()));
+				client.connect();
+				if (!client.reader.readLine().startsWith(Protocol.CONFIRM)) {
+					throw new UserAlreadyConnectedException();
+				} else {
+					System.out.println("For help, type " + HELP);
+					infoReady = true;
+				}
+
+			} catch (IOException | NumberFormatException e){
+				System.out.println("An IO-Exception/NumberFormatException Occured, please enter information again. " + "Possible causes:\n"
+						+ "- incorrect ip address\n" + "- incorrect port number\n");
+			} catch (UserAlreadyConnectedException e) {
+				System.out.println(e.getMessage() + ". Please choose a different username");
+			} catch (InvalidInputException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		try {
+			client.ServerHandler = new ServerHandler(client.reader, client);
+			client.ServerHandler.start();
+			client.handleTerminalInput();
+		} catch (IOException e) {
+			System.out.println("IO exception in main client");
+		}
+
+	}
+
+	public void getConnectionInfo() throws IOException, NumberFormatException {
+		System.out.println("What is your name?");
+		String[] nameparts = terminalReader.readLine().split(" ");
+		name = "";
+		for (int i = 0; i < nameparts.length; i++) {
+			name = name + nameparts[i];
+		}
+		System.out.println("To what ip address do you wish to connect?");
+		ipAddress = InetAddress.getByName(terminalReader.readLine());
+		System.out.println("To what port do you wish to connect?");
+		port = Integer.parseInt(terminalReader.readLine());
+	}
+
+	public void getPlayerInfo() throws IOException, InvalidInputException {
+		System.out.println("Do you wish to play with an AI (1) or by yourself (2)?");
+		String playChoice = terminalReader.readLine();
+		if (playChoice.equals("2")) {
+			player = new HumanNetworkPlayer(Mark.O, name, terminalReader);
+		} else if (playChoice.equals("1")) {
+			System.out.println("Do you wish to play with a fast naive AI (1) or slow smart AI (2)?");
+			playChoice = terminalReader.readLine();
+			if (playChoice.equals("1")) {
+				player = new ComputerPlayer(Mark.O, new NaiveStrategy());
+			} else if (playChoice.equals("2")) {
+				player = new ComputerPlayer(Mark.O, new SmartStrategy());
+			} else {
+				throw new InvalidInputException("Invalid input, please provide a 1 or a 2 as answer");
+			}
+		} else {
+			throw new InvalidInputException("Invalid input, please provide a 1 or a 2 as answer");
+		}
+	}
+
+	public void handleTerminalInput() throws IOException {
+		boolean running = true;
+		while (running) {
+			while (!hasTurn) {
+				if (terminalReader.ready()) {
+					String input = terminalReader.readLine();
+					String[] parsedInput = input.split(" ");
+					if (parsedInput.length >= 1 && parsedInput[0].equals(Protocol.DISCONNECT)) {
+						writeToServer(input);
+						running = false;
+						disconnect();
+					} else if (parsedInput.length >= 1 && parsedInput[0].equals(HELP)) {
+						System.out.println(GIVEHELP);
+					} else {
+						writeToServer(input);
+					}
+				}
+			}
+		}
+	}
+
+	public void disconnect() throws IOException {
+		ServerHandler.stopRunning();
+		writer.close();
+		terminalReader.close();
+		reader.close();
+	}
+
+	public void connect() {
+		writeToServer(Protocol.CONNECT + " " + name);
+	}
+
+	public void writeToServer(String msg) {
+		writer.println(msg);
+		writer.flush();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isHasTurn() {
+		return hasTurn;
+	}
+
+	public void setHasTurn(boolean hasTurn) {
+		this.hasTurn = hasTurn;
+	}
 }
