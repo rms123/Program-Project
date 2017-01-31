@@ -1,5 +1,5 @@
 package connect4;
-
+import java.util.Observable;
 
 /**
  * Game student for the Tic Tac Toe game. Module 2 lab assignment.
@@ -7,7 +7,7 @@ package connect4;
  * @author Theo Ruys en Arend Rensink
  * @version $Revision: 1.4 $
  */
-public class Board {
+public class Board extends Observable{
     public static final int DIM = 4;
     private static final String[] NUMBERING = {" 00 | 01 | 02 | 03 ", "___________________________________________________________________________________________________________________",
     		" 10 | 11 | 12 | 13 ", "_____________________________________________________________________________________________________________________________", " 20 | 21 | 22 | 23 ","_________________________________________________________________________________________________", " 30 | 31 | 32 | 33 ","__________________________________________________________________________________________________________________________________"};
@@ -21,7 +21,7 @@ public class Board {
     //@ private invariant fields.length == DIM*DIM;
     /*@ invariant (\forall int i; 0 <= i & i < DIM*DIM;
         getField(i) == Mark.EMPTY || getField(i) == Mark.REDDD || getField(i) == Mark.YELLO); */
-    private Mark[][][] fields = new Mark[DIM][DIM][DIM];
+    private Mark[][][] fields ;
 
     // -- Constructors -----------------------------------------------
 
@@ -30,13 +30,8 @@ public class Board {
      */
     //@ ensures (\forall int i; 0 <= i & i < DIM * DIM; this.getField(i) == Mark.EMPTY);
     public Board() {
-    	for (int x=0; x<DIM; x++){
-    		for (int y=0; y<DIM; y++){
-    			for (int z=0; z<DIM; z++){
-    				fields[x][y][z] = Mark.EMPTY;	
-    			}
-    		}
-    	}
+    	fields = new Mark[DIM][DIM][DIM];
+    	reset();
     }
 
     /**
@@ -412,6 +407,8 @@ public class Board {
     			}
     		}
     	}
+    	this.setChanged();
+    	this.notifyObservers();
     }
 
     /**
@@ -440,6 +437,8 @@ public class Board {
     			break;
     		}else break;
     	}
+    	this.setChanged();
+    	this.notifyObservers();
     }
 
 //

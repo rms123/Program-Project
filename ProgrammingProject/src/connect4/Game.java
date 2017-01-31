@@ -2,6 +2,7 @@ package connect4;
 	
 
 import java.util.Scanner;
+import client.*;
 
 /**
  * Class for maintaining the Tic Tac Toe game. Lab assignment Module 2
@@ -9,11 +10,17 @@ import java.util.Scanner;
  * @author Theo Ruys en Arend Rensink
  * @version $Revision: 1.4 $
  */
-public class Game {
+public class Game extends Thread{
 
     // -- Instance variables -----------------------------------------
 
     public static final int NUMBER_PLAYERS = 2;
+    private Player player1;
+    private Player player2;
+    private int playerAmount;
+    private Client client;
+    private boolean local;
+    private int turn;
 
     /*@
        private invariant board != null;
@@ -37,8 +44,8 @@ public class Game {
      */
     /**
      * Index of the current player.
-     */
-    private int current;
+     *//*
+    private int current;*/
 
     // -- Constructors -----------------------------------------------
 
@@ -54,12 +61,41 @@ public class Game {
      * @param s1
      *            the second player
      */
-    public Game(Player s0, Player s1) {
+    public Game(Player s0, Player s1, boolean local) {
         board = new Board();
         players = new Player[NUMBER_PLAYERS];
         players[0] = s0;
         players[1] = s1;
-        current = 0;
+        if (s0 instanceof ComputerPlayer){
+        	board.addObserver(((ComputerPlayer) s0).getStrategy());
+        }
+        if (s1 instanceof ComputerPlayer){
+        	board.addObserver(((ComputerPlayer) s1).getStrategy());
+        }
+        this.local= local;
+        playerAmount = 2;
+        turn = 0;
+        
+    }
+    
+    public void run(){
+    	board.toString();
+    	while(!board.gameOver()){
+    		boolean madeMove = false;
+    		while(!madeMove){
+    			try{
+    				madeMove = true;
+    				makeMove(this.determineTurn());
+    			}catch(Exception e){
+    				System.out.println(e.getMessage());
+    				madeMove =false;
+    			}
+    		}
+    	}
+    	this.printResult();
+    	if(local == false){
+    		System.out.println("Game is finish, try another game type GAME READY");
+    	}
     }
 
     // -- Commands ---------------------------------------------------

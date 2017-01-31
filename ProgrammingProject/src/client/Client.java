@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import connect4.*;
+import exceptions.*;
 
 public class Client {
 
@@ -48,7 +49,7 @@ public class Client {
 				client.writer = new PrintWriter(new OutputStreamWriter(client.sock.getOutputStream()));
 				client.connect();
 				if (!client.reader.readLine().startsWith(Protocol.CONFIRM)) {
-					throw new UserAlreadyConnectedException();
+					throw new UserHasConnectException();
 				} else {
 					System.out.println("For help, type " + HELP);
 					infoReady = true;
@@ -57,9 +58,9 @@ public class Client {
 			} catch (IOException | NumberFormatException e){
 				System.out.println("An IO-Exception/NumberFormatException Occured, please enter information again. " + "Possible causes:\n"
 						+ "- incorrect ip address\n" + "- incorrect port number\n");
-			} catch (UserAlreadyConnectedException e) {
+			} catch (UserHasConnectException e) {
 				System.out.println(e.getMessage() + ". Please choose a different username");
-			} catch (InvalidInputException e) {
+			} catch (InputErrorException e) {
 				System.out.println(e.getMessage());
 			}
 		}
@@ -86,23 +87,23 @@ public class Client {
 		port = Integer.parseInt(terminalReader.readLine());
 	}
 
-	public void getPlayerInfo() throws IOException, InvalidInputException {
+	public void getPlayerInfo() throws IOException, InputErrorException {
 		System.out.println("Do you wish to play with an AI (1) or by yourself (2)?");
 		String playChoice = terminalReader.readLine();
 		if (playChoice.equals("2")) {
-			player = new HumanNetworkPlayer(Mark.O, name, terminalReader);
+			player = new HumanNetworkPlayer(Mark.REDDD, name, terminalReader);
 		} else if (playChoice.equals("1")) {
 			System.out.println("Do you wish to play with a fast naive AI (1) or slow smart AI (2)?");
 			playChoice = terminalReader.readLine();
 			if (playChoice.equals("1")) {
-				player = new ComputerPlayer(Mark.O, new NaiveStrategy());
+				player = new ComputerPlayer(Mark.REDDD, new NaiveStrategy());
 			} else if (playChoice.equals("2")) {
-				player = new ComputerPlayer(Mark.O, new SmartStrategy());
+				player = new ComputerPlayer(Mark.REDDD, new SmartStrategy());
 			} else {
-				throw new InvalidInputException("Invalid input, please provide a 1 or a 2 as answer");
+				throw new InputErrorException("Invalid input, please provide a 1 or a 2 as answer");
 			}
 		} else {
-			throw new InvalidInputException("Invalid input, please provide a 1 or a 2 as answer");
+			throw new InputErrorException("Invalid input, please provide a 1 or a 2 as answer");
 		}
 	}
 
