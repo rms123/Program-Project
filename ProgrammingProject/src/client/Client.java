@@ -81,19 +81,19 @@ public class Client {
 		for (int i = 0; i < nameparts.length; i++) {
 			name = name + nameparts[i];
 		}
-		System.out.println("To what ip address do you wish to connect?");
+		System.out.println("What's the ip address to connect?");
 		ipAddress = InetAddress.getByName(terminalReader.readLine());
-		System.out.println("To what port do you wish to connect?");
+		System.out.println("What's the port number to connect?");
 		port = Integer.parseInt(terminalReader.readLine());
 	}
 
 	public void getPlayerInfo() throws IOException, InputErrorException {
-		System.out.println("Do you wish to play with an AI (1) or by yourself (2)?");
+		System.out.println("Do want this client as AI palyer(1) or play this game yourself(2)?");
 		String playChoice = terminalReader.readLine();
 		if (playChoice.equals("2")) {
 			player = new HumanNetPlayer(Mark.REDDD, name, terminalReader);
 		} else if (playChoice.equals("1")) {
-			System.out.println("Do you wish to play with a fast naive AI (1) or slow smart AI (2)?");
+			System.out.println("Do you want to play with a naive AI (1) or smart AI (2)?");
 			playChoice = terminalReader.readLine();
 			if (playChoice.equals("1")) {
 				player = new ComputerPlayer(Mark.REDDD, new NaiveStrategy());
