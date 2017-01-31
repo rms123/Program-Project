@@ -56,6 +56,10 @@ public class Board extends Observable{
     public int getDIM(){
     	return DIM;
     }
+    
+    public static void setDIM(int dim){
+    	
+    }
 
     /**
      * Calculates the index in the linear array of fields from a (x, y, z)

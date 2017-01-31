@@ -21,6 +21,7 @@ public class Game extends Thread{
     private Client client;
     private boolean local;
     private int turn;
+    private TUI tui;
 
     /*@
        private invariant board != null;
@@ -63,9 +64,14 @@ public class Game extends Thread{
      */
     public Game(Player s0, Player s1, boolean local) {
         board = new Board();
-        players = new Player[NUMBER_PLAYERS];
+        player1 = s0;
+        player2 = s1;
+        tui = new TUI(board);
+        board.addObserver(tui);
+        /*players = new Player[NUMBER_PLAYERS];
         players[0] = s0;
         players[1] = s1;
+        board.toString();*/
         if (s0 instanceof ComputerPlayer){
         	board.addObserver(((ComputerPlayer) s0).getStrategy());
         }
@@ -79,7 +85,7 @@ public class Game extends Thread{
     }
     
     public void run(){
-    	board.toString();
+    	System.out.println(tui.ToString(board));
     	while(!board.gameOver()){
     		boolean madeMove = false;
     		while(!madeMove){
@@ -101,6 +107,14 @@ public class Game extends Thread{
     public void MakeMove(Player player){
     	player.makeMove(board);
     	turn++;
+    	if (player instanceof OnlinePlayer) {
+			int[] reset = new int[2];
+			reset[0] = -1;
+			OnlinePlayer onlinePlayer = (OnlinePlayer) player;
+			onlinePlayer.setMoveBuffer(reset);
+		} else if (!local) {
+			client.writeToServer(Protocol.CLIENT_MOVE /*+ " " + coords[0] + " " + coords[1]*/);
+		}
     }
     
     public Player determineTurn(){
