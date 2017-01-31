@@ -44,7 +44,8 @@ public class HumanPlayer extends Player {
      * @return the player's chosen field
      */
     
-    public int determineMove(Board board) {
+    public int[] determineMove(Board board) {
+    	int[] choice = new int[2];
         String prompt = "> " + getName() + " (" + getMark().toString() + ")"
                 + ", what is your choice for x? ";
         int choiceX = readInt(prompt);
@@ -60,16 +61,18 @@ public class HumanPlayer extends Player {
            
             valid = board.isField(choiceX,choiceY) && board.isEmptyField(choiceX,choiceY);
         }
-        int choice[] = {choiceX, choiceY};
+        choice[0] = choiceX;
+        choice[1] = choiceY;
+        return choice;
 
-        StringBuilder strNum = new StringBuilder();
-
-        for (int num : choice) 
-        {
-             strNum.append(num);
-        }
-        int finalInt = Integer.parseInt(strNum.toString());
-        return finalInt;
+        //StringBuilder strNum = new StringBuilder();
+//
+       // for (int num : choice) 
+      //  {
+      //       strNum.append(num);
+      //  }
+      //  int finalInt = Integer.parseInt(strNum.toString());
+      //  return finalInt;
     }
 
     /**

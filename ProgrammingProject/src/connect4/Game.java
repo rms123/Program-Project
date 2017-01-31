@@ -85,7 +85,7 @@ public class Game extends Thread{
     		while(!madeMove){
     			try{
     				madeMove = true;
-    				makeMove(this.determineTurn());
+    				this.determineTurn().makeMove(board);
     			}catch(Exception e){
     				System.out.println(e.getMessage());
     				madeMove =false;
@@ -97,6 +97,34 @@ public class Game extends Thread{
     		System.out.println("Game is finish, try another game type GAME READY");
     	}
     }
+    
+    public void MakeMove(Player player){
+    	player.makeMove(board);
+    	turn++;
+    }
+    
+    public Player determineTurn(){
+    	turn = turn%playerAmount;
+    	if(turn==0){
+    		return  player1;
+    	}else{
+    		return player2;
+    	}
+    }
+    
+    public Player getWinner(){
+    	if (board.isWinner(player1.getMark())){
+    		return player1;
+    	}
+    	if (board.isWinner(player2.getMark())){
+    		return player2;
+    	}else{System.out.println("it's a tie");
+    			return null;}
+    }
+    
+    public void setClient(Client client){
+    	this.client=client;
+    }
 
     // -- Commands ---------------------------------------------------
 
@@ -105,14 +133,14 @@ public class Game extends Thread{
      * Asks after each ended game if the user want to continue. Continues until
      * the user does not want to play anymore.
      */
-    public void start() {
+    /*public void start() {
         boolean doorgaan = true;
         while (doorgaan) {
             reset();
             play();
             doorgaan = readBoolean("\n> Play another time? (y/n)?", "y", "n");
         }
-    }
+    }*/
 
     /**
      * Prints a question which can be answered by yes (true) or no (false).
@@ -143,10 +171,10 @@ public class Game extends Thread{
      * Resets the game. <br>
      * The board is emptied and player[0] becomes the current player.
      */
-    private void reset() {
+   /* private void reset() {
         current = 0;
         board.reset();
-    }
+    }*/
 
     /**
      * Plays the Tic Tac Toe game. <br>
@@ -154,7 +182,7 @@ public class Game extends Thread{
      * is over. Players can make a move one after the other. After each move,
      * the changed game situation is printed.
      */
-    private void play() {
+    /*private void play() {
     	
         while (!board.gameOver()){
         	
@@ -163,7 +191,7 @@ public class Game extends Thread{
         	update();
         }
         printResult();
-    }
+    }*/
 
     /**
      * Prints the game situation.

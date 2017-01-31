@@ -91,7 +91,7 @@ public class Client {
 		System.out.println("Do you wish to play with an AI (1) or by yourself (2)?");
 		String playChoice = terminalReader.readLine();
 		if (playChoice.equals("2")) {
-			player = new HumanNetworkPlayer(Mark.REDDD, name, terminalReader);
+			player = new HumanNetPlayer(Mark.REDDD, name, terminalReader);
 		} else if (playChoice.equals("1")) {
 			System.out.println("Do you wish to play with a fast naive AI (1) or slow smart AI (2)?");
 			playChoice = terminalReader.readLine();

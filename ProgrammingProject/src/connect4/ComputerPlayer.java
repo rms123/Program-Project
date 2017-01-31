@@ -13,7 +13,7 @@ public class ComputerPlayer extends Player{
 		this(mark, new NaiveStrategy()); 
     } 
 	
-	public int determineMove(Board board) { 
+	public int[] determineMove(Board board) { 
 		  return strategy.determineMove(board, this.getMark()); 
 		 } 
 	

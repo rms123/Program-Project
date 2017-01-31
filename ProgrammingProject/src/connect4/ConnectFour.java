@@ -47,14 +47,15 @@ public class ConnectFour {
     }
 	
     public static void main(String[] args) {
-    	if (args.length ==2){
+    	if (args.length ==3){
     		System.setIn(new UncloseableInputStream());
     	    Player p1 = determinePlayer(args[0], Mark.REDDD); 
         	Player p2 = determinePlayer(args[1], Mark.YELLO); 
-        	Game game = new Game(p1, p2); 
-        	game.start();
+        	Game game = new Game(p1, p2,true); 
+        	game.run();
     	}else{
     		System.out.println("Please input two arguments");
+    		
     	}
     	
     }

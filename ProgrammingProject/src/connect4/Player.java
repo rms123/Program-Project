@@ -61,7 +61,7 @@ public abstract class Player {
      *            the current game board
      * @return the player's choice
      */
-    public abstract int determineMove(Board board);
+    public abstract int[] determineMove(Board board);
 
     // -- Commands ---------------------------------------------------
 
@@ -75,8 +75,9 @@ public abstract class Player {
      *            the current board
      */
     public void makeMove(Board board) {
-        int choice = determineMove(board);
-        String temp="";
+    	int[] choice = new int[2];
+        choice = determineMove(board);
+        /*String temp="";
         if (choice == 0){
         	temp = "00" ;
         	
@@ -96,8 +97,8 @@ public abstract class Player {
         for (int i = 0; i < temp.length(); i++)
         {
             newGuess[i] = temp.charAt(i) - '0';
-        }
-        board.setField(newGuess[0],newGuess[1], getMark());
+        }*/
+        board.setField(choice[0],choice[1], getMark());
     }
 
 }
