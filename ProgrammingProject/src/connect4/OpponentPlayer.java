@@ -3,10 +3,10 @@ package connect4;
 
 
 
-public class OnlinePlayer extends Player {
+public class OpponentPlayer extends Player {
 	private int[] moveBuffer;
 
-	public OnlinePlayer(Mark mark, String name) {
+	public OpponentPlayer(Mark mark, String name) {
 		super(name,mark);
 		moveBuffer = new int[2];
 		moveBuffer[0] = -1;

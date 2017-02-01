@@ -13,8 +13,8 @@ import exceptions.*;
 
 public class Client {
 
-	public static final String HELP = "HELP";
-	public static final String GIVEHELP = "List of commands:\n" + "DISCONNECT: disconnect from server and exit\n"
+	public static final String COMMAND = "COMMAND";
+	public static final String GIVECOMMAND = "List of commands:\n" + "DISCONNECT: disconnect from server and exit\n"
 			+ "PLAYERS ALL: get list of players that are connected to server\n"
 			+ "GAME READY: notify server you are ready to play a game\n"
 			+ "GAME UNREADY: notify server that you are not ready anymore to play a game\n";
@@ -51,7 +51,7 @@ public class Client {
 				if (!client.reader.readLine().startsWith(Protocol.CONFIRM)) {
 					throw new UserHasConnectException();
 				} else {
-					System.out.println("For help, type " + HELP);
+					System.out.println("For commands, type " + COMMAND);
 					infoReady = true;
 				}
 
@@ -118,8 +118,8 @@ public class Client {
 						writeToServer(input);
 						running = false;
 						disconnect();
-					} else if (parsedInput.length >= 1 && parsedInput[0].equals(HELP)) {
-						System.out.println(GIVEHELP);
+					} else if (parsedInput.length >= 1 && parsedInput[0].equals(COMMAND)) {
+						System.out.println(GIVECOMMAND);
 					} else {
 						writeToServer(input);
 					}

@@ -13,12 +13,12 @@ public class ServerHandler extends Thread {
 	private BufferedReader input;
 	private boolean running;
 	private Client client;
-	private OnlinePlayer opponent;
+	private OpponentPlayer opponent;
 	private Game gameThread;
 
-	public ServerHandler(BufferedReader reader, Client clt) throws IOException {
+	public ServerHandler(BufferedReader reader, Client client) throws IOException {
 		input = reader;
-		client = clt;
+		this.client = client;
 	}
 
 	public void run() {
@@ -27,36 +27,36 @@ public class ServerHandler extends Thread {
 		while (running) {
 			try {
 				if (input.ready()) {
-					String rawText = input.readLine();
-					String[] parsedText = rawText.split(" ");
-					if (parsedText.length >= 4 && rawText.startsWith(Protocol.START)) {
-						if (parsedText[2].equals(client.getName())) {
-							opponent = new OnlinePlayer(Mark.YELLO, parsedText[3]);
+					String inputtt = input.readLine();
+					String[] TEext = inputtt.split(" ");
+					if (TEext.length >= 4 && inputtt.startsWith(Protocol.START)) {
+						if (TEext[2].equals(client.getName())) {
+							opponent = new OpponentPlayer(Mark.YELLO, TEext[3]);
 							gameThread = new Game(client.getPlayer(), opponent, false);
 							gameThread.setClient(client);
 							client.setHasTurn(true);
 							gameThread.start();
 						} else {
-							opponent = new OnlinePlayer(Mark.YELLO, parsedText[2]);
+							opponent = new OpponentPlayer(Mark.YELLO, TEext[2]);
 							gameThread = new Game(opponent, client.getPlayer(), false);
 							gameThread.setClient(client);
 							gameThread.start();
 						}
-					} else if (parsedText.length >= 4 && rawText.startsWith(Protocol.SERVER_MOVE)) {
-						if (parsedText[2].equals(opponent.getName())) {
+					} else if (TEext.length >= 4 && inputtt.startsWith(Protocol.SERVER_MOVE)) {
+						if (TEext[2].equals(opponent.getName())) {
 							int[] move = new int[2];
-							move[0] = Integer.parseInt(parsedText[3]);
-							move[1] = Integer.parseInt(parsedText[4]);
+							move[0] = Integer.parseInt(TEext[3]);
+							move[1] = Integer.parseInt(TEext[4]);
 							opponent.setMoveBuffer(move);
 							client.setHasTurn(true);
 						} else {
 							client.setHasTurn(false);
 						}
-					} else if (rawText.startsWith(Protocol.END_WINNER) || rawText.startsWith(Protocol.END_DRAW)) {
+					} else if (inputtt.startsWith(Protocol.END_WINNER) || inputtt.startsWith(Protocol.END_DRAW)) {
 						
 					}
 					else {
-						System.out.println(rawText);
+						System.out.println(input);
 					}
 				}
 			} catch (IOException e) {

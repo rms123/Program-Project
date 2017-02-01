@@ -88,10 +88,10 @@ public class Game extends Thread{
     	player.makeMove(board);
     	turn++;
     	
-    	if (player instanceof OnlinePlayer) {
+    	if (player instanceof OpponentPlayer) {
 			int[] reset = new int[2];
 			reset[0] = -1;
-			OnlinePlayer onlinePlayer = (OnlinePlayer) player;
+			OpponentPlayer onlinePlayer = (OpponentPlayer) player;
 			onlinePlayer.setMoveBuffer(reset);
 		} else if (!local) {
 			client.writeToServer(Protocol.CLIENT_MOVE); 
