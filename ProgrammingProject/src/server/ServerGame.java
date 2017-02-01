@@ -3,7 +3,7 @@ import connect4.*;
 import exceptions.*;
 
 
-public class ServerGameHandler extends Thread {
+public class ServerGame extends Thread {
 	private ClientHandler clientThread1;
 	private ClientHandler clientThread2;
 	private Board board;
@@ -12,7 +12,7 @@ public class ServerGameHandler extends Thread {
 	private boolean disconnect;
 	private ClientHandler disconnectedThread;
 
-	public ServerGameHandler(ClientHandler client1, ClientHandler client2) {
+	public ServerGame(ClientHandler client1, ClientHandler client2) {
 		clientThread1 = client1;
 		clientThread2 = client2;
 		clientThread1.setMark(Mark.REDDD);

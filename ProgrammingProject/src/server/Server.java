@@ -57,7 +57,7 @@ public class Server {
 	}
 
 	public void startGame() {
-		Thread game = new ServerGameHandler(getReadyClients().get(0), getReadyClients().get(1));
+		Thread game = new ServerGame(getReadyClients().get(0), getReadyClients().get(1));
 		getReadyClients().remove(1);
 		getReadyClients().remove(0);
 		game.start();

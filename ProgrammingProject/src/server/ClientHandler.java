@@ -23,7 +23,7 @@ public class ClientHandler extends Thread {
 	private String name;
 	private Mark mark;
 	private Integer[] moves;
-	private ServerGameHandler servergame;
+	private ServerGame servergame;
 
 	public ClientHandler(Socket sock, Server server) throws IOException {
 		this.socket = sock;
@@ -190,7 +190,7 @@ public class ClientHandler extends Thread {
 		this.mark = mark;
 	}
 
-	public void setGameThread(ServerGameHandler gameThread) {
+	public void setGameThread(ServerGame gameThread) {
 		this.servergame = gameThread;
 	}
 
