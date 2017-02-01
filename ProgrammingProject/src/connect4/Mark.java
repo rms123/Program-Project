@@ -1,6 +1,7 @@
 package connect4;
 
 
+
 /**
  * Represents a mark in the Tic Tac Toe game. There three possible values:
  * Mark.REDDD, Mark.YELLO and Mark.EMPTY.
@@ -23,7 +24,7 @@ public enum Mark {
      * 
      * @return the other mark is this mark is not EMPTY or EMPTY
      */
-    public Mark other() {
+    /*public Mark other() {
         if (this == REDDD) {
             return YELLO;
         } else if (this == YELLO) {
@@ -31,5 +32,16 @@ public enum Mark {
         } else {
             return EMPTY;
         }
-    }
+    }*/
+	public Mark next(Mark m) {
+		switch (m) {
+			case REDDD:
+				return YELLO;
+			case YELLO:
+				return REDDD;
+			default:
+				return EMPTY;
+
+		}
+	}
 }

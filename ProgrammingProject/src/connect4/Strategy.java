@@ -11,5 +11,7 @@ public abstract class Strategy implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		board = (Board) arg0;
 	}
+	
+	
 
 }

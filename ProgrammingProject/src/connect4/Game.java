@@ -4,6 +4,7 @@ package connect4;
 import java.util.Scanner;
 import client.*;
 
+
 /**
  * Class for maintaining the Tic Tac Toe game. Lab assignment Module 2
  * 
@@ -104,7 +105,16 @@ public class Game extends Thread{
     	}
     }
     
-    public void MakeMove(Player player){
+    public void MakeMove(Player player) throws InterruptedException{
+    	
+    	if (player instanceof OnlinePlayer){
+    		OnlinePlayer onlinePlayer = (OnlinePlayer) player;
+			System.out.println("Waiting for opponents move...");
+			while (onlinePlayer.getMoveBuffer() == -1) {
+				sleep(1);
+			}
+    	}
+    	int[] coords = player.determineMove(board);
     	player.makeMove(board);
     	turn++;
     	if (player instanceof OnlinePlayer) {
@@ -113,7 +123,7 @@ public class Game extends Thread{
 			OnlinePlayer onlinePlayer = (OnlinePlayer) player;
 			onlinePlayer.setMoveBuffer(reset);
 		} else if (!local) {
-			client.writeToServer(Protocol.CLIENT_MOVE /*+ " " + coords[0] + " " + coords[1]*/);
+			client.writeToServer(Protocol.CLIENT_MOVE + " " + coords[0] + " " + coords[1]);
 		}
     }
     
@@ -126,14 +136,13 @@ public class Game extends Thread{
     	}
     }
     
-    public Player getWinner(){
+    public Player getWinner() throws Exception{
     	if (board.isWinner(player1.getMark())){
     		return player1;
     	}
     	if (board.isWinner(player2.getMark())){
     		return player2;
-    	}else{System.out.println("it's a tie");
-    			return null;}
+    	}else{throw new Exception("it's a tie");}
     }
     
     public void setClient(Client client){

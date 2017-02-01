@@ -33,6 +33,11 @@ public abstract class Player {
         this.name = name;
         this.mark = mark;
     }
+    
+    public Player (Mark mark,Strategy strat){
+    	this.mark = mark;
+    	name = strat.getName();
+    }
 
     // -- Queries ----------------------------------------------------
 
