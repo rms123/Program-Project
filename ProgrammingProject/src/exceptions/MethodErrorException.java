@@ -8,6 +8,6 @@ public class MethodErrorException extends Exception{
 	}
 	
 	public MethodErrorException(String message){
-		super("Error code " + Protocol.Error.ILLEGAL_METHOD_USE.code + ": Method has error: " + message);
+		super( Protocol.METHODERROR + message);
 	}
 }

@@ -12,55 +12,10 @@ import java.io.*;
  * @version $Revision: 1.4 $
  */
 public class ConnectFour {
-	/*private static class UncloseableInputStream extends FilterInputStream {
-
-        *//**
-         * Creates a wrapper around {@link System.in}.
-         *//*
-        UncloseableInputStream() {
-            this(System.in);
-        }
-
-        *//**
-         * Creates a wrapper around an arbitrary {@link InputStream}.
-         * @param stream The stream to wrap.
-         *//*
-        UncloseableInputStream(InputStream stream) {
-            super(stream);
-        }
-
-        *//**
-         * {@inheritDoc}
-         *//*
-        @Override
-        public void close() throws IOException {
-            // Don't do anything
-        }
-    }*/
-	/*public static Player determinePlayer(String arg, Mark mark) { 
-    	String argu = arg.toUpperCase();
-    	if (argu.equals("-N")) {
-    		return new ComputerPlayer(mark, new NaiveStrategy());
-    	}else if (argu.equals("-S")){
-    		return new ComputerPlayer(mark, new SmartStrategy()); 
-    	}else {
-    		return new HumanPlayer(arg, mark); 
-    	}
-    }*/
+	
 	
     public static void main(String[] args) {
-    	/*if (args.length ==3){
-    		//System.setIn(new UncloseableInputStream());
-    	    Player p1 = determinePlayer(args[0], Mark.REDDD); 
-        	Player p2 = determinePlayer(args[1], Mark.YELLO); 
-        	Game game = new Game(p1, p2,true); 
-        	game.run();
-    	}else{
-    		System.out.println("Please input two arguments");
-    		
-    	}
     	
-    }*/
     	Player player1 = null;
 		Player player2 = null;
 		Game game = null;
@@ -81,7 +36,7 @@ public class ConnectFour {
 		}
 		
 		if (args[2].equals("human")) {
-			player2 = new HumanPlayer("player1",Mark.YELLO );
+			player2 = new HumanPlayer("player2",Mark.YELLO );
 		} else if (args[2].equals("ai")) {
 			player2 = new ComputerPlayer(Mark.YELLO, new SmartStrategy());
 		} else {

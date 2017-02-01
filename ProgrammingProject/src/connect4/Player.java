@@ -33,11 +33,6 @@ public abstract class Player {
         this.name = name;
         this.mark = mark;
     }
-    
-    public Player (Mark mark,Strategy strat){
-    	this.mark = mark;
-    	name = strat.getName();
-    }
 
     // -- Queries ----------------------------------------------------
 
@@ -82,27 +77,6 @@ public abstract class Player {
     public void makeMove(Board board) {
     	int[] choice = new int[2];
         choice = determineMove(board);
-        /*String temp="";
-        if (choice == 0){
-        	temp = "00" ;
-        	
-        }else if (choice == 1){
-        	temp = "01" ;
-        	
-        }else if (choice == 2){
-        	temp = "02" ;
-
-        }else if (choice == 3){
-        	temp = "03" ;
-        }else{ 
-        	temp = Integer.toString(choice);
-        }
-    
-        int[] newGuess = new int[temp.length()];
-        for (int i = 0; i < temp.length(); i++)
-        {
-            newGuess[i] = temp.charAt(i) - '0';
-        }*/
         board.setField(choice[0],choice[1], getMark());
     }
 

@@ -1,12 +1,7 @@
 package connect4;
 import java.util.Observable;
 
-/**
- * Game student for the Tic Tac Toe game. Module 2 lab assignment.
- *
- * @author Theo Ruys en Arend Rensink
- * @version $Revision: 1.4 $
- */
+
 public class Board extends Observable{
     public static final int DIM = 4;
     private static final String[] NUMBERING = {" 00 | 01 | 02 | 03 ", "___________________________________________________________________________________________________________________",
@@ -14,13 +9,8 @@ public class Board extends Observable{
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
 
-    /**
-     * The DIM by DIM fields of the Tic Tac Toe student. See NUMBERING for the
-     * coding of the fields.
-     */
-    //@ private invariant fields.length == DIM*DIM;
-    /*@ invariant (\forall int i; 0 <= i & i < DIM*DIM;
-        getField(i) == Mark.EMPTY || getField(i) == Mark.REDDD || getField(i) == Mark.YELLO); */
+    
+    
     private Mark[][][] fields ;
 
     // -- Constructors -----------------------------------------------
@@ -28,7 +18,7 @@ public class Board extends Observable{
     /**
      * Creates an empty student.
      */
-    //@ ensures (\forall int i; 0 <= i & i < DIM * DIM; this.getField(i) == Mark.EMPTY);
+    //@ ensures (\forall int i; 0 <= i & i < DIM * DIM*DIM; this.getField(i) == Mark.EMPTY);
     public Board() {
     	fields = new Mark[DIM][DIM][DIM];
     	reset();
@@ -61,24 +51,7 @@ public class Board extends Observable{
     	
     }
 
-    /**
-     * Calculates the index in the linear array of fields from a (x, y, z)
-     * pair.
-     * @return the index belonging to the (x,y,z)-field
-     */
-    //@ requires 0 <= x & x < DIM;
-    //@ requires 0 <= y & y < DIM;
-    //@ requires 0 <= z & z < DIM;
-    /*@pure*/
-// HEAD
-   // public int index(int x, int y, int z) {
-    //	return "x"+ "y" + "z";
-    //}
-
-//    public int index(int x, int y, int z) {
-  //  	return DIM*x + y + DIM*DIM*z;
-    //}
-//github.com/rms123/Program-Project.git
+   
 
     /**
      * Returns true of the (x,y,z)  refers to a valid field on the student.
@@ -91,15 +64,7 @@ public class Board extends Observable{
     	return (0<= x && x< DIM && 0<= y && y< DIM);
     }
 
-    /**
-     * Returns true if index is a valid index of a field on the student.
-     * @return true if 0 <= index < DIM*DIM
-     */
-    //@ ensures \result == (0 <= index && index < DIM * DIM*DIM);
-    /*@pure*/
-    //public Boolean isField(int index) {
-    //	return (0<= index && index < DIM*DIM*DIM);
-    //}
+   
     
     /**
      * Returns the content of the field i.
@@ -115,21 +80,7 @@ public class Board extends Observable{
     	return (isField(x,y)) ? fields[x][y][z] : null;
     }
 
-    /**
-     * Returns the content of the field referREDDD to by the (row,col) pair.
-     *
-     * @param row
-     *            the row of the field
-     * @param col
-     *            the column of the field
-     * @return the mark on the field
-     */
-    //@ requires this.isField(row,col);
-    //@ ensures \result == Mark.EMPTY || \result == Mark.REDDD || \result == Mark.YELLO;
-    /*@pure*/
-   //public Mark getField(int row, int col) {
-	//   return (isField(row,col)) ? fields[index(row,col)] : null;
-   // }
+   
 
     /**
      * Returns true if the field i is empty.
@@ -150,22 +101,7 @@ public class Board extends Observable{
     	return false;
     }
 
-    /**
-     * Returns true if the field referREDDD to by the (row,col) pair it empty.
-     *
-     * @param row
-     *            the row of the field
-     * @param col
-     *            the column of the field
-     * @return true if the field is empty
-     */
-    //@ requires this.isField(row,col);
-    //@ ensures \result == (this.getField(row,col) == Mark.EMPTY);
-    /*@pure*/
-    //public Boolean isEmptyField(int row, int col) {
-    //	return (getField(row,col).equals(Mark.EMPTY));
-    //}
-
+    
     /**
      * Tests if the whole student is full.
      *
@@ -188,30 +124,7 @@ public class Board extends Observable{
 
     
 
-    /**
-     * Checks whether there is a row which is full and only contains the mark
-     * m.
-     *
-     * @param m
-     *            the mark of interest
-     * @return true if there is a row controlled by m
-     *///---------------------------------------------------HASROWWWWWWW ORIGINAL
-    /*@ pure */
-   // public Boolean hasRow(Mark m) {
-    //	for (int row = 0; row < DIM; row++) { 
-     //       Boolean othermark = false; 
-     //       for (int col = 0; col < DIM; col++) { 
-     //       	if (!getField(row, col).equals(m)) { 
-      //      		othermark = true; 
-      //      		break; 
-      //      	} 
-      //      } 
-       //     if (othermark == false) {
-       //     	return true; 
-       //     }
-       //    } 
-      //  return false; 
-   // }
+   
     public Boolean hasRow(Mark m) {
     		for (int y=0; y<DIM; y++){
     			for (int z=0; z<DIM; z++){
@@ -258,24 +171,7 @@ public class Board extends Observable{
 		return false;
 }
 
-    /**
-     * Checks whether there is a diagonal which is full and only contains the
-     * mark m.
-     *
-     * @param m
-     *            the mark of interest
-     * @return true if there is a diagonal controlled by m
-     */
-    /*@ pure */
-   // public Boolean hasDiagonal(Mark m) {
-   // 	if ( getField(0).equals(m) && getField(4).equals(m) && getField(8).equals(m) ){
-   // 		return true;
-   // 	}else if ( getField(2).equals(m) && getField(4).equals(m) && getField(6).equals(m)){
-   // 		return true;
-   // 	}else{
-    //		return false;
-   // 	}
-    //}
+   
     public Boolean hasDiagonal(Mark m) {
 		// Diagonal for X-Y plane
     	for (int z=0; z<DIM; z++){
@@ -446,22 +342,7 @@ public class Board extends Observable{
     }
 
 //
-    /**
-     * Sets the content of the field represented by the (row,col) pair to the
-     * mark m.
-     *
-     * @param row
-     *            the field's row
-     * @param col
-     *            the field's column
-     * @param m
-     *            the mark to be placed
-     */
-    //@ requires this.isField(row,col);
-    //@ ensures this.getField(row,col) == m;
-    //public void setField(int row, int col, Mark m) {
-    //	fields[index(row,col)] = m;
-    //}
+    
     public boolean IsChoiceValid(int x, int y, int z){
     	// Checks if mark is in the air
     	if (z == 0){
